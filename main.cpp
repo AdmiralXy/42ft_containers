@@ -1,27 +1,15 @@
 #include <iostream>
-#include "src/vector.hpp"
+#include <stack>
+#include "src/stack.hpp"
 #include <vector>
 
 template <typename T>
-void print_vector(ft::vector<T> &vector)
+void print_stack(T stack)
 {
-	typename ft::vector<T>::iterator iterator;
-	iterator = vector.begin();
-	for (int i = 0; iterator != vector.end(); iterator++, i++)
+	for (typename T::size_type i = stack.size(); i > 0; --i)
 	{
-		std::cout << vector[i] << " ";
-	}
-	std::cout << std::endl;
-}
-
-template <typename T>
-void print_vector(std::vector<T> &vector)
-{
-	typename std::vector<T>::iterator iterator;
-	iterator = vector.begin();
-	for (int i = 0; iterator != vector.end(); iterator++, i++)
-	{
-		std::cout << vector[i] << " ";
+		std::cout << stack.top() << " ";
+		stack.pop();
 	}
 	std::cout << std::endl;
 }
@@ -35,17 +23,9 @@ public:
 
 int main()
 {
-	std::vector<std::string> v;
-	v.reserve(15);
-	for (int i = 0; i < 15; ++i)
-	{
-		v.push_back("hello world!");
-	}
-	ft::vector<std::string> vector;
-	vector.assign(v.begin(), v.end());
-	vector.assign(10, "test!");
-	ft::vector<std::string> leaks;
-	leaks = vector;
-	leaks.erase(leaks.begin());
-	leaks.erase(leaks.begin() + 1, leaks.begin() + 4);
+	std::vector<std::string> vector(5, "text");
+
+	ft::stack<std::string, std::vector<std::string> > stack(vector);
+
+	print_stack(stack);
 }

@@ -364,6 +364,9 @@ namespace ft
 		}
 
 	};
+
+	// TODO relational operators
+	// TODO swap
 }
 
 #endif

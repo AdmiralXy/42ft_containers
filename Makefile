@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98 -Isrc -I.
 NAME_UNIT_TESTS = main_tests
 NAME_BENCHMARK = main_benchmark
 
-SRCS_UNIT_TESTS = tests/tests.cpp tests/utilities.cpp tests/vector.cpp
+SRCS_UNIT_TESTS = tests/tests.cpp tests/utilities.cpp tests/vector.cpp tests/stack.cpp
 OBJS_UNIT_TESTS = $(SRCS_UNIT_TESTS:%.cpp=%.o)
 
 %.o: %.cpp

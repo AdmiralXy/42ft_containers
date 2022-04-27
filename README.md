@@ -51,5 +51,7 @@ $> ./main_benchmark
 
 ### Docs
 
-https://www.cplusplus.com/reference/vector/vector/
-https://en.cppreference.com/w/cpp/current/iterator_tags
+* Vector - https://www.cplusplus.com/reference/vector/vector/
+* Stack - https://www.cplusplus.com/reference/stack/stack/
+* Other:
+  * https://en.cppreference.com/w/cpp/current/iterator_tags

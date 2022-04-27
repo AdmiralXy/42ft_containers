@@ -2,8 +2,6 @@
 #include "vector.hpp"
 #include <vector>
 
-int N = 100;
-
 // Utility
 
 template<typename T>
@@ -399,9 +397,8 @@ T get_allocator()
 	return vector;
 }
 
-void vector(int n)
+void vector()
 {
-	N = n;
 	print_title("Vector");
 	run_case("Constructor", &default_constructor< ft::vector<int> >, &default_constructor< std::vector<int> >);
 	run_case("Constructor(n, val)", &constructor_n_val< ft::vector<int> >, &constructor_n_val< std::vector<int> >);
