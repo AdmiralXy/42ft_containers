@@ -2,12 +2,12 @@
 
 ### About
 
-Recreating standard C++ containers: vector, stack, map in C++98
+Reimplementation of C++98 containers: vector, stack, map. With all member types, public functions and non-member overloads.
 
 ### Reimplemented features
 
 * Containers:
-  * Vector (\<bool\> space-efficient specialization not implemented)
+  * Vector (boolean space-efficient specialization not implemented)
   * Stack
   * Map
 
@@ -43,15 +43,10 @@ Makefile commands:
 * make tests - run unit tests
 * make leaks - run unit tests with Valgrind leak coverage
 
-Run benchmark:
-```
-$> make all
-$> ./main_benchmark
-```
-
 ### Docs
 
 * Vector - https://www.cplusplus.com/reference/vector/vector/
 * Stack - https://www.cplusplus.com/reference/stack/stack/
+* Map - https://www.cplusplus.com/reference/map/map/
 * Other:
   * https://en.cppreference.com/w/cpp/current/iterator_tags
