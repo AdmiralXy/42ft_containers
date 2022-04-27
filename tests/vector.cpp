@@ -397,6 +397,46 @@ T get_allocator()
 	return vector;
 }
 
+template<typename T>
+T relational_operators()
+{
+	T vector1(10, 3);
+	T vector2(10, 3);
+	T vector3(5, 3);
+	std::vector<int> v;
+
+	v.push_back(vector1 == vector2);
+	v.push_back(vector1 == vector3);
+
+	v.push_back(vector1 != vector2);
+	v.push_back(vector1 != vector3);
+
+	v.push_back(vector1 < vector2);
+	v.push_back(vector1 < vector3);
+
+	v.push_back(vector1 <= vector2);
+	v.push_back(vector1 <= vector3);
+
+	v.push_back(vector1 > vector2);
+	v.push_back(vector1 > vector3);
+
+	v.push_back(vector1 >= vector2);
+	v.push_back(vector1 >= vector3);
+
+	T vector(v.begin(), v.end());
+	return vector;
+}
+
+template<typename T>
+T swap_non_member()
+{
+	T vector_tmp(50, 7);
+	T vector(10, 3);
+	vector.swap(vector);
+	vector.swap(vector_tmp);
+	return vector;
+}
+
 void vector()
 {
 	print_title("Vector");
@@ -431,4 +471,6 @@ void vector()
 	run_case("swap", &swap< ft::vector<int> >, &swap< std::vector<int> >);
 	run_case("clear", &clear< ft::vector<int> >, &clear< std::vector<int> >);
 	run_case("get_allocator", &get_allocator< ft::vector<int> >, &get_allocator< std::vector<int> >);
+	run_case("Relational operators", &relational_operators< ft::vector<int> >, &relational_operators< std::vector<int> >);
+	run_case("swap(non-member)", &swap_non_member< ft::vector<int> >, &swap_non_member< std::vector<int> >);
 }

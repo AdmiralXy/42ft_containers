@@ -109,6 +109,50 @@ T pop()
 	return stack;
 }
 
+template<typename T>
+T relational_operators()
+{
+	T stack1;
+	stack1.push(7);
+	stack1.push(3);
+	stack1.push(1);
+	stack1.push(6);
+	stack1.push(11);
+	T stack2;
+	stack2.push(7);
+	stack2.push(3);
+	stack2.push(1);
+	stack2.push(6);
+	stack2.push(11);
+	T stack3;
+	stack3.push(76);
+	stack3.push(53);
+	stack3.push(1651);
+	stack3.push(13);
+	stack3.push(191);
+
+	T stack;
+	stack.push(stack1 == stack2);
+	stack.push(stack1 == stack3);
+
+	stack.push(stack1 != stack2);
+	stack.push(stack1 != stack3);
+
+	stack.push(stack1 < stack2);
+	stack.push(stack1 < stack3);
+
+	stack.push(stack1 <= stack2);
+	stack.push(stack1 <= stack3);
+
+	stack.push(stack1 > stack2);
+	stack.push(stack1 > stack3);
+
+	stack.push(stack1 >= stack2);
+	stack.push(stack1 >= stack3);
+
+	return stack;
+}
+
 void stack()
 {
 	print_title("Stack");
@@ -118,4 +162,5 @@ void stack()
 	run_case("top", &top< ft::stack<int> >, &top< std::stack<int> >);
 	run_case("push", &push< ft::stack<int> >, &push< std::stack<int> >);
 	run_case("pop", &pop< ft::stack<int> >, &pop< std::stack<int> >);
+	run_case("Relational operators", &relational_operators< ft::stack<int> >, &relational_operators< std::stack<int> >);
 }

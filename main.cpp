@@ -2,6 +2,7 @@
 #include <stack>
 #include "src/stack.hpp"
 #include <vector>
+#include "src/vector.hpp"
 
 template <typename T>
 void print_stack(T stack)
@@ -23,9 +24,8 @@ public:
 
 int main()
 {
-	std::vector<std::string> vector(5, "text");
+	std::stack<int> vector1(7, 3);
+	ft::vector<int> vector2(10, 3);
 
-	ft::stack<std::string, std::vector<std::string> > stack(vector);
-
-	print_stack(stack);
+	std::cout << (vector1 <= vector2) << std::endl;
 }
