@@ -1,0 +1,7 @@
+cmake-*
+*.o
+CMakeLists.txt
+.idea
+a.out
+main
+main_tests
