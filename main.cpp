@@ -3,6 +3,9 @@
 #include "src/stack.hpp"
 #include <vector>
 #include "src/vector.hpp"
+#include <map>
+#include "src/map.hpp"
+#include "src/utility/tree.hpp"
 
 template <typename T>
 void print_stack(T stack)
@@ -24,8 +27,10 @@ public:
 
 int main()
 {
-	std::stack<int> vector1(7, 3);
-	ft::vector<int> vector2(10, 3);
-
-	std::cout << (vector1 <= vector2) << std::endl;
+	std::map<int, int> map;
+	//ft::Binary_tree< std::pair<int, int> > map;
+	for (int i = 0; i < 100000; ++i) {
+		map.insert(std::pair<int, int>(i, i));
+	}
+	std::cout << map.size() << std::endl;
 }

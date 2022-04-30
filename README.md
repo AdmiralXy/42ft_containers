@@ -47,6 +47,8 @@ Makefile commands:
 
 * Vector - https://www.cplusplus.com/reference/vector/vector/
 * Stack - https://www.cplusplus.com/reference/stack/stack/
-* Map - https://www.cplusplus.com/reference/map/map/
+* Map
+  * https://www.cplusplus.com/reference/map/map/
+  * https://gcc.gnu.org/onlinedocs/libstdc++/libstdc++-html-USERS-4.1/classstd_1_1map.html
 * Other:
   * https://en.cppreference.com/w/cpp/current/iterator_tags
