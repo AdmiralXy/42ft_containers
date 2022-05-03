@@ -1,11 +1,11 @@
 #include <iostream>
 #include <stack>
-#include "src/stack.hpp"
+#include "../src/stack.hpp"
 #include <vector>
-#include "src/vector.hpp"
+#include "../src/vector.hpp"
 #include <map>
-#include "src/map.hpp"
-#include "src/utility/tree.hpp"
+#include "../src/map.hpp"
+#include "../src/utility/tree.hpp"
 
 template <typename T>
 void print_stack(T stack)
