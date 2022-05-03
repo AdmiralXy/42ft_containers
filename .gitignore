@@ -1,7 +1,6 @@
 cmake-*
 *.o
 CMakeLists.txt
-.idea
 a.out
-main
-main_tests
+containers_benchmark
+containers_tests
