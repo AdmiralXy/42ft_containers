@@ -4,37 +4,37 @@
 namespace ft
 {
 	template <class T>
-	struct Tree_node
+	struct Node
 	{
 		T value;
-		Tree_node* left_child;
-		Tree_node* right_child;
+		Node* left_child;
+		Node* right_child;
 
-		explicit Tree_node(T value) : value(value), left_child(0), right_child(0)
+		explicit Node(T value) : value(value), left_child(0), right_child(0)
 		{
 
 		}
 
-		Tree_node(T value, Tree_node *l, Tree_node *r) : value(value), left_child(l), right_child(r)
+		Node(T value, Node *l, Node *r) : value(value), left_child(l), right_child(r)
 		{
 
 		}
 	};
 
 	template <class T>
-	class Binary_tree {
+	class Tree {
 	private:
-		Tree_node<T>* _root;
+		Node<T>* _root;
 		int _size;
 	public:
-		Binary_tree() : _root(0), _size(0) { }
+		Tree() : _root(0), _size(0) { }
 
-		explicit Binary_tree(T value) : _size(1)
+		explicit Tree(T value) : _size(1)
 		{
-			_root = new Tree_node<T>(value);
+			_root = new Node<T>(value);
 		}
 
-		~Binary_tree()
+		~Tree()
 		{
 			Clear(_root);
 		}
@@ -42,11 +42,11 @@ namespace ft
 		bool add(T value)
 		{
 			if (_root == 0)
-				_root = new Tree_node<T>(value);
+				_root = new Node<T>(value);
 			else
 			{
-				Tree_node<T>* A = _root;
-				Tree_node<T>* B = A;
+				Node<T>* A = _root;
+				Node<T>* B = A;
 				while (A != 0)
 				{
 					if (A->value == value)
@@ -58,9 +58,9 @@ namespace ft
 						A = A->right_child;
 				}
 				if (value < B->value)
-					B->left_child = new Tree_node<T>(value);
+					B->left_child = new Node<T>(value);
 				else
-					B->right_child = new Tree_node<T>(value);
+					B->right_child = new Node<T>(value);
 			}
 			++_size;
 			return true;
@@ -72,7 +72,7 @@ namespace ft
 				return false;
 			else
 			{
-				Tree_node<T>* A = _root;
+				Node<T>* A = _root;
 				while (A != 0)
 				{
 					if (A->value == value)
@@ -89,8 +89,8 @@ namespace ft
 		void remove(T value)
 		{
 			if (_root != 0) {
-				Tree_node<T>* A = _root;
-				Tree_node<T>* B = A;
+				Node<T>* A = _root;
+				Node<T>* B = A;
 
 				while (A->value != value)
 				{
@@ -109,8 +109,8 @@ namespace ft
 						B->right_child = 0;
 					delete A;
 				} else if (A->left_child && A->right_child) {
-					Tree_node<T>* B_parent = B;
-					for (Tree_node<T>* tempSearch = A->right_child; tempSearch != 0;)
+					Node<T>* B_parent = B;
+					for (Node<T>* tempSearch = A->right_child; tempSearch != 0;)
 					{
 						B_parent = B;
 						B = tempSearch;
@@ -151,13 +151,17 @@ namespace ft
 			}
 		}
 
-		//int height();
 		int size()
 		{
 			return _size;
 		}
+
+        void print()
+        {
+            default_print(_root, 0);
+        }
 	private:
-		void default_print(Tree_node<T> *A, int space)
+		void default_print(Node<T> *A, int space)
 		{
 			if (A)
 			{
@@ -170,7 +174,7 @@ namespace ft
 				std::cout << "@" << std::endl;
 			}
 		}
-		void Clear(Tree_node<T> *A)
+		void Clear(Node<T> *A)
 		{
 			if (A) {
 				Clear(A->right_child);
@@ -178,15 +182,6 @@ namespace ft
 				delete A;
 			}
 		}
-	public:
-		void print()
-		{
-			default_print(_root, 0);
-		}
-
-		//void print_pre_order();
-		//void print_in_order();
-		//void print_post_order();
 	};
 }
 

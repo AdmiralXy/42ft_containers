@@ -27,10 +27,10 @@ public:
 
 int main()
 {
-	std::map<int, int> map;
-	//ft::Binary_tree< std::pair<int, int> > map;
+	//std::map<int, int> map;
+	ft::Tree< std::pair<int, int> > map;
 	for (int i = 0; i < 100000; ++i) {
-		map.insert(std::pair<int, int>(i, i));
+		map.add(std::pair<int, int>(i, i));
 	}
 	std::cout << map.size() << std::endl;
 }
