@@ -3,21 +3,50 @@
 
 namespace ft
 {
-	template <class T>
-	struct Node
+	struct NodeBase
 	{
-		T value;
-		Node* left_child;
-		Node* right_child;
+		typedef NodeBase*			base_ptr;
+		typedef const NodeBase*		const_base_ptr;
+		NodeBase*					parent;
 
-		explicit Node(T value) : value(value), left_child(0), right_child(0)
+		NodeBase(NodeBase *parent)
 		{
+			this->parent = parent;
+		}
+	};
 
+	template <class T>
+	struct Node : public NodeBase
+	{
+		T								value;
+		typedef Node<T>*				link_type;
+		Node<T>*						left_child;
+		Node<T>*						right_child;
+
+		explicit Node(T value, Node *parent) : NodeBase(parent), value(value), left_child(0), right_child(0) {}
+
+		static base_ptr minimum(link_type x)
+		{
+			while (x->left_child != 0)
+				x = x->left_child;
+			return x;
 		}
 
-		Node(T value, Node *l, Node *r) : value(value), left_child(l), right_child(r)
+		static base_ptr maximum(link_type x)
 		{
+			while (x->right_child != 0)
+				x = x->right_child;
+			return x;
+		}
 
+		T* valptr()
+		{
+			return std::__addressof(value);
+		}
+
+		const T* valptr() const
+		{
+			return std::__addressof(value);
 		}
 	};
 
@@ -31,7 +60,22 @@ namespace ft
 
 		explicit Tree(T value) : _size(1)
 		{
-			_root = new Node<T>(value);
+			_root = new Node<T>(value, 0);
+		}
+
+		Tree(const Tree &x) : _size()
+		{
+			*this = x;
+		}
+
+		Tree& operator=(const Tree& x)
+		{
+			if (this == &x)
+				return *this;
+			Clear(_root);
+			_root = x.base();
+			_size = x.size();
+			return *this;
 		}
 
 		~Tree()
@@ -42,7 +86,7 @@ namespace ft
 		bool add(T value)
 		{
 			if (_root == 0)
-				_root = new Node<T>(value);
+				_root = new Node<T>(value, 0);
 			else
 			{
 				Node<T>* A = _root;
@@ -58,9 +102,9 @@ namespace ft
 						A = A->right_child;
 				}
 				if (value < B->value)
-					B->left_child = new Node<T>(value);
+					B->left_child = new Node<T>(value, B);
 				else
-					B->right_child = new Node<T>(value);
+					B->right_child = new Node<T>(value, B);
 			}
 			++_size;
 			return true;
@@ -160,6 +204,16 @@ namespace ft
         {
             default_print(_root, 0);
         }
+
+		Node<T>* begin()
+		{
+			return _root;
+		}
+
+		T base()
+		{
+			return _root;
+		}
 	private:
 		void default_print(Node<T> *A, int space)
 		{
