@@ -1,10 +1,13 @@
 #ifndef INC_42FT_CONTAINERS_PAIR_H
 #define INC_42FT_CONTAINERS_PAIR_H
 
+#include <ostream>
+
 namespace ft
 {
 	template <class T1, typename T2>
-	struct pair {
+	struct pair
+	{
 		typedef T1 first_type;
 		typedef T2 second_type;
 		T1 first;
@@ -22,6 +25,12 @@ namespace ft
 			first = other.first;
 			second = other.second;
 			return *this;
+		}
+
+		std::ostream &operator<<(std::ostream &os, const pair &pair)
+		{
+			os << "[" << pair.first << ", " << pair.second << "]";
+			return os;
 		}
 	};
 
