@@ -9,7 +9,7 @@ namespace ft
 		typedef const NodeBase*		const_base_ptr;
 		NodeBase*					parent;
 
-		NodeBase(NodeBase *parent)
+		explicit NodeBase(NodeBase *parent)
 		{
 			this->parent = parent;
 		}
@@ -22,6 +22,8 @@ namespace ft
 		typedef Node<T>*				link_type;
 		Node<T>*						left_child;
 		Node<T>*						right_child;
+
+		explicit Node(const T& value) : NodeBase(0), value(value), left_child(0), right_child(0) {}
 
 		explicit Node(T value, Node *parent) : NodeBase(parent), value(value), left_child(0), right_child(0) {}
 
@@ -50,43 +52,39 @@ namespace ft
 		}
 	};
 
-	template <class T>
-	class Tree {
+	template <class T, typename Compare = std::less<T>, typename Alloc = std::allocator<T> >
+	class Tree
+	{
+	public:
+		typedef typename Alloc::template rebind<Node<T> >::other	allocator_type;
 	private:
-		Node<T>* _root;
-		int _size;
+		Node<T>*		_root;
+		int				_size;
+		allocator_type	_alloc;
 	public:
 		Tree() : _root(0), _size(0) { }
 
-		explicit Tree(T value) : _size(1)
-		{
-			_root = new Node<T>(value, 0);
-		}
-
-		Tree(const Tree &x) : _size()
-		{
-			*this = x;
-		}
+		Tree(const Tree &x) : _size() { *this = x; }
 
 		Tree& operator=(const Tree& x)
 		{
 			if (this == &x)
 				return *this;
-			Clear(_root);
+			clear(_root);
 			_root = x.base();
 			_size = x.size();
 			return *this;
 		}
 
-		~Tree()
-		{
-			Clear(_root);
-		}
+		~Tree() { clear(_root); }
 
 		bool add(T value)
 		{
 			if (_root == 0)
-				_root = new Node<T>(value, 0);
+			{
+				_root = _alloc.allocate(1);
+				_alloc.construct(_root, Node<T>(value));
+			}
 			else
 			{
 				Node<T>* A = _root;
@@ -101,10 +99,13 @@ namespace ft
 					else
 						A = A->right_child;
 				}
-				if (value < B->value)
-					B->left_child = new Node<T>(value, B);
-				else
-					B->right_child = new Node<T>(value, B);
+				if (value < B->value) {
+					B->left_child = _alloc.allocate(1);
+					_alloc.construct(B->left_child, Node<T>(value, B));
+				} else {
+					B->right_child = _alloc.allocate(1);
+					_alloc.construct(B->right_child, Node<T>(value, B));
+				}
 			}
 			++_size;
 			return true;
@@ -151,7 +152,8 @@ namespace ft
 						B->left_child = 0;
 					else
 						B->right_child = 0;
-					delete A;
+					_alloc.destroy(A);
+					_alloc.deallocate(A, 1);
 				} else if (A->left_child && A->right_child) {
 					Node<T>* B_parent = B;
 					for (Node<T>* tempSearch = A->right_child; tempSearch != 0;)
@@ -172,7 +174,8 @@ namespace ft
 						else
 							B_parent->right_child = B->right_child;
 					}
-					delete B;
+					_alloc.destroy(B);
+					_alloc.deallocate(B, 1);
 				} else {
 					if (A == B) {
 						if (A->left_child == 0)
@@ -190,7 +193,8 @@ namespace ft
 						else
 							B->right_child = A->left_child;
 					}
-					delete A;
+					_alloc.destroy(A);
+					_alloc.deallocate(A, 1);
 				}
 			}
 		}
@@ -205,9 +209,25 @@ namespace ft
             default_print(_root, 0);
         }
 
+		void inorder()
+		{
+			inorder_print(_root);
+		}
+
 		Node<T>* begin()
 		{
-			return _root;
+			Node<T>* tmp = _root;
+			while (tmp->left_child)
+				tmp = tmp->left_child;
+			return tmp;
+		}
+
+		Node<T>* end()
+		{
+			Node<T>* tmp = _root;
+			while (tmp->right_child)
+				tmp = tmp->right_child;
+			return tmp;
 		}
 
 		T base()
@@ -228,12 +248,23 @@ namespace ft
 				std::cout << "@" << std::endl;
 			}
 		}
-		void Clear(Node<T> *A)
+
+		void inorder_print(Node<T> *A)
 		{
 			if (A) {
-				Clear(A->right_child);
-				Clear(A->left_child);
-				delete A;
+				inorder_print(A->left_child);
+				std::cout << A->value << " ";
+				inorder_print(A->right_child);
+			}
+		}
+
+		void clear(Node<T> *node)
+		{
+			if (node) {
+				clear(node->right_child);
+				clear(node->left_child);
+				_alloc.destroy(node);
+				_alloc.deallocate(node, 1);
 			}
 		}
 	};
