@@ -10,21 +10,12 @@ namespace ft
 		T1 first;
 		T2 second;
 
-		pair() : first(), second()
-		{
+		pair() : first(), second() { }
 
-		}
-
-		pair(T1 const& a, T2 const& b) : first(a), second(b)
-		{
-
-		}
+		pair(T1 const& a, T2 const& b) : first(a), second(b) { }
 
 		template <class U1, class U2>
-		explicit pair(const pair<U1, U2>& p) : first(p.first), second(p.second)
-		{
-
-		}
+		explicit pair(const pair<U1, U2>& p) : first(p.first), second(p.second) { }
 
 		pair& operator=(const pair& other)
 		{
