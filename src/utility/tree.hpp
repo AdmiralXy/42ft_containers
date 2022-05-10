@@ -4,49 +4,89 @@
 namespace ft
 {
 	template <class T>
-	struct Tree_node
+	struct Node
 	{
-		T value;
-		Tree_node* left_child;
-		Tree_node* right_child;
+		T								value;
+		typedef Node<T>*				link_type;
+		Node<T>*						parent;
+		Node<T>*						left_child;
+		Node<T>*						right_child;
 
-		explicit Tree_node(T value) : value(value), left_child(0), right_child(0)
+		explicit Node() : parent(0), left_child(0), right_child(0) {}
+
+		explicit Node(const T& value) : value(value), parent(0), left_child(0), right_child(0) {}
+
+		explicit Node(T value, Node *parent) : value(value), parent(parent), left_child(0), right_child(0) {}
+
+		static Node<T>* minimum(link_type x)
 		{
-
+			while (x->left_child != 0)
+				x = x->left_child;
+			return x;
 		}
 
-		Tree_node(T value, Tree_node *l, Tree_node *r) : value(value), left_child(l), right_child(r)
+		static Node<T>* maximum(link_type x)
 		{
+			while (x->right_child != 0)
+				x = x->right_child;
+			return x;
+		}
 
+		T* valptr()
+		{
+			return std::__addressof(value);
+		}
+
+		const T* valptr() const
+		{
+			return std::__addressof(value);
 		}
 	};
 
-	template <class T>
-	class Binary_tree {
-	private:
-		Tree_node<T>* _root;
-		int _size;
+	template <class T, typename Compare = std::less<T>, typename Alloc = std::allocator<T> >
+	class Tree
+	{
 	public:
-		Binary_tree() : _root(0), _size(0) { }
-
-		explicit Binary_tree(T value) : _size(1)
+		typedef typename Alloc::template rebind<Node<T> >::other	allocator_type;
+	private:
+		Node<T>*		_root;
+		Node<T>*		_end;
+		int				_size;
+		allocator_type	_alloc;
+	public:
+		explicit Tree(const allocator_type &alloc = allocator_type()) : _root(0), _size(0), _alloc(alloc)
 		{
-			_root = new Tree_node<T>(value);
+			_end = _alloc.allocate(1);
+			_alloc.construct(_end, Node<T>());
 		}
 
-		~Binary_tree()
+		Tree(const Tree &x) : _size() { *this = x; }
+
+		Tree& operator=(const Tree& x)
 		{
-			Clear(_root);
+			if (this == &x)
+				return *this;
+			clear(_root);
+			_root = x.base();
+			_size = x.size();
+			return *this;
 		}
+
+		~Tree() { clear(_root); }
 
 		bool add(T value)
 		{
 			if (_root == 0)
-				_root = new Tree_node<T>(value);
+			{
+				_root = _alloc.allocate(1);
+				_alloc.construct(_root, Node<T>(value));
+				set_end(_root);
+			}
 			else
 			{
-				Tree_node<T>* A = _root;
-				Tree_node<T>* B = A;
+				_end->parent->right_child = 0;
+				Node<T>* A = _root;
+				Node<T>* B = A;
 				while (A != 0)
 				{
 					if (A->value == value)
@@ -57,10 +97,14 @@ namespace ft
 					else
 						A = A->right_child;
 				}
-				if (value < B->value)
-					B->left_child = new Tree_node<T>(value);
-				else
-					B->right_child = new Tree_node<T>(value);
+				if (value < B->value) {
+					B->left_child = _alloc.allocate(1);
+					_alloc.construct(B->left_child, Node<T>(value, B));
+				} else {
+					B->right_child = _alloc.allocate(1);
+					_alloc.construct(B->right_child, Node<T>(value, B));
+				}
+				set_end(_root);
 			}
 			++_size;
 			return true;
@@ -72,7 +116,7 @@ namespace ft
 				return false;
 			else
 			{
-				Tree_node<T>* A = _root;
+				Node<T>* A = _root;
 				while (A != 0)
 				{
 					if (A->value == value)
@@ -89,8 +133,8 @@ namespace ft
 		void remove(T value)
 		{
 			if (_root != 0) {
-				Tree_node<T>* A = _root;
-				Tree_node<T>* B = A;
+				Node<T>* A = _root;
+				Node<T>* B = A;
 
 				while (A->value != value)
 				{
@@ -107,10 +151,11 @@ namespace ft
 						B->left_child = 0;
 					else
 						B->right_child = 0;
-					delete A;
+					_alloc.destroy(A);
+					_alloc.deallocate(A, 1);
 				} else if (A->left_child && A->right_child) {
-					Tree_node<T>* B_parent = B;
-					for (Tree_node<T>* tempSearch = A->right_child; tempSearch != 0;)
+					Node<T>* B_parent = B;
+					for (Node<T>* tempSearch = A->right_child; tempSearch != 0;)
 					{
 						B_parent = B;
 						B = tempSearch;
@@ -128,7 +173,8 @@ namespace ft
 						else
 							B_parent->right_child = B->right_child;
 					}
-					delete B;
+					_alloc.destroy(B);
+					_alloc.deallocate(B, 1);
 				} else {
 					if (A == B) {
 						if (A->left_child == 0)
@@ -146,18 +192,46 @@ namespace ft
 						else
 							B->right_child = A->left_child;
 					}
-					delete A;
+					_alloc.destroy(A);
+					_alloc.deallocate(A, 1);
 				}
 			}
 		}
 
-		//int height();
 		int size()
 		{
 			return _size;
 		}
+
+        void print()
+        {
+            default_print(_root, 0);
+        }
+
+		void inorder()
+		{
+			inorder_print(_root);
+		}
+
+		Node<T>* begin()
+		{
+			Node<T>* tmp = _root;
+			while (tmp->left_child)
+				tmp = tmp->left_child;
+			return tmp;
+		}
+
+		Node<T>* end()
+		{
+			return _end;
+		}
+
+		T base()
+		{
+			return _root;
+		}
 	private:
-		void default_print(Tree_node<T> *A, int space)
+		void default_print(Node<T> *A, int space)
 		{
 			if (A)
 			{
@@ -170,23 +244,34 @@ namespace ft
 				std::cout << "@" << std::endl;
 			}
 		}
-		void Clear(Tree_node<T> *A)
+
+		void inorder_print(Node<T> *A)
 		{
 			if (A) {
-				Clear(A->right_child);
-				Clear(A->left_child);
-				delete A;
+				inorder_print(A->left_child);
+				std::cout << A->value << " ";
+				inorder_print(A->right_child);
 			}
 		}
-	public:
-		void print()
+
+		void clear(Node<T> *node)
 		{
-			default_print(_root, 0);
+			if (node) {
+				clear(node->right_child);
+				clear(node->left_child);
+				_alloc.destroy(node);
+				_alloc.deallocate(node, 1);
+			}
 		}
 
-		//void print_pre_order();
-		//void print_in_order();
-		//void print_post_order();
+		void set_end(Node<T> *node)
+		{
+			Node<T>* tmp = node;
+			while (tmp->right_child)
+				tmp = tmp->right_child;
+			tmp->right_child = _end;
+			_end->parent = tmp;
+		}
 	};
 }
 

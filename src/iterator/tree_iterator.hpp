@@ -1,11 +1,64 @@
 #ifndef INC_42FT_CONTAINERS_TREE_ITERATOR_H
 #define INC_42FT_CONTAINERS_TREE_ITERATOR_H
 
-#include "iterator_traits.hpp"
-#include "../utility/utility.hpp"
+#include "utility/utility.hpp"
 
 namespace ft
 {
+	template <typename T>
+	static Node<T>*
+	tree_increment(Node<T>* node)
+	{
+		if (node)
+		{
+			if (node->right_child != 0)
+			{
+				node = node->right_child;
+				while (node->left_child != 0)
+					node = node->left_child;
+			}
+			else
+			{
+				Node<T>* tmp = node->parent;
+				while (node == tmp->right_child)
+				{
+					node = tmp;
+					tmp = tmp->parent;
+				}
+				if (node->right_child != tmp)
+					node = tmp;
+			}
+		}
+		return node;
+	}
+
+	template <typename T>
+	static Node<T>*
+	tree_decrement(Node<T>* _x)
+	{
+//		if (__x->_M_color == _S_red
+//			&& __x->_M_parent->_M_parent == __x)
+//			__x = __x->_M_right;
+//		else if (__x->_M_left != 0)
+//		{
+//			_Rb_tree_node_base* __y = __x->_M_left;
+//			while (__y->_M_right != 0)
+//				__y = __y->_M_right;
+//			__x = __y;
+//		}
+//		else
+//		{
+//			_Rb_tree_node_base* __y = __x->_M_parent;
+//			while (__x == __y->_M_left)
+//			{
+//				__x = __y;
+//				__y = __y->_M_parent;
+//			}
+//			__x = __y;
+//		}
+//		return __x;
+	}
+
 	template<typename T>
 	struct tree_iterator
 	{
@@ -13,67 +66,53 @@ namespace ft
 		typedef T& reference;
 		typedef T* pointer;
 
-		typedef bidirectional_iterator_tag iterator_category;
-		typedef ptrdiff_t			 difference_type;
+		typedef bidirectional_iterator_tag	iterator_category;
+		typedef std::ptrdiff_t				difference_type;
 
-		typedef tree_iterator<T>		_Self;
-		typedef _Rb_tree_node_base::_Base_ptr	_Base_ptr;
-		typedef _Rb_tree_node<T>*		_Link_type;
+		typedef tree_iterator<T>			self;
+		typedef Node<T>*					link_type;
 
-		tree_iterator()
-				: _M_node() { }
+		tree_iterator() : node() { }
 
-		explicit
-		tree_iterator(_Base_ptr __x)
-				: _M_node(__x) { }
+		explicit tree_iterator(Node<T>* _x) : node(_x) { }
 
-		reference
-		operator*() const
-		{ return *static_cast<_Link_type>(_M_node)->_M_valptr(); }
+		reference operator*() const { return *static_cast<link_type>(node)->valptr(); }
 
-		pointer
-		operator->() const
-		{ return static_cast<_Link_type> (_M_node)->_M_valptr(); }
+		pointer operator->() const { return static_cast<link_type> (node)->valptr(); }
 
-		_Self&
-		operator++()
+		self& operator++()
 		{
-			_M_node = _Rb_tree_increment(_M_node);
+			node = tree_increment<T>(node);
 			return *this;
 		}
 
-		_Self
-		operator++(int)
+		self operator++(int)
 		{
-			_Self __tmp = *this;
-			_M_node = _Rb_tree_increment(_M_node);
-			return __tmp;
+			self _tmp = *this;
+			node = tree_increment<T>(node);
+			return _tmp;
 		}
 
-		_Self&
-		operator--()
+		self& operator--()
 		{
-			_M_node = _Rb_tree_decrement(_M_node);
+			node = tree_decrement<T>(node);
 			return *this;
 		}
 
-		_Self
-		operator--(int)
+		self operator--(int)
 		{
-			_Self __tmp = *this;
-			_M_node = _Rb_tree_decrement(_M_node);
-			return __tmp;
+			self _tmp = *this;
+			node = tree_decrement<T>(node);
+			return _tmp;
 		}
 
 		friend bool
-		operator==(const _Self& __x, const _Self& __y)
-		{ return __x._M_node == __y._M_node; }
+		operator==(const self& _x, const self& _y) { return _x.node == _y.node; }
 
 		friend bool
-		operator!=(const _Self& __x, const _Self& __y)
-		{ return __x._M_node != __y._M_node; }
+		operator!=(const self& _x, const self& _y) { return _x.node != _y.node; }
 
-		_Base_ptr _M_node;
+		Node<T>* node;
 	};
 }
 

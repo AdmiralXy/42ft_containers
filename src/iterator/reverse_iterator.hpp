@@ -7,7 +7,8 @@
 namespace ft
 {
 	template <class T>
-	class reverse_iterator {
+	class reverse_iterator
+	{
 	protected:
 		T							current;
 		typedef iterator_traits<T>	_traits_type;

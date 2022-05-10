@@ -12,7 +12,22 @@ OBJS_UNIT_TESTS = $(SRCS_UNIT_TESTS:%.cpp=%.o)
 SRCS_BENCHMARK = benchmark/main.cpp
 OBJS_BENCHMARK = $(SRCS_BENCHMARK:%.cpp=%.o)
 
-%.o: %.cpp
+INCLUDES = src/iterator/iterator_traits.hpp \
+		src/iterator/normal_iterator.hpp \
+		src/iterator/reverse_iterator.hpp \
+		src/iterator/tree_iterator.hpp \
+		src/utility/enable_if.hpp \
+		src/utility/equal.hpp \
+		src/utility/is_integral.hpp \
+		src/utility/lexicographical_compare.hpp \
+		src/utility/pair.hpp \
+		src/utility/tree.hpp \
+		src/utility/utility.hpp \
+		src/map.hpp \
+		src/stack.hpp \
+		src/vector.hpp
+
+%.o: %.cpp $(INCLUDES)
 	@$(CC) $(CFLAGS) -c $< -o $(<:.cpp=.o)
 	@echo "Building: \033[0;34m$<\033[0m"
 
@@ -43,3 +58,5 @@ tests: $(NAME_UNIT_TESTS)
 leaks: $(NAME_UNIT_TESTS)
 	valgrind --leak-check=full --leak-resolution=med --vgdb=no -s ./$(NAME_UNIT_TESTS) 100000
 	@make fclean -s
+
+.PHONY: all

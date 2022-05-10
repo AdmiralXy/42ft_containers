@@ -6,5 +6,6 @@
 #include "equal.hpp"
 #include "lexicographical_compare.hpp"
 #include "pair.hpp"
+#include "tree.hpp"
 
 #endif
