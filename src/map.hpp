@@ -43,7 +43,7 @@ namespace ft
     private:
 		Compare _comp;
         allocator_type _alloc;
-        Tree<value_type> _tree;
+        Tree<value_type, Compare, Alloc> _tree;
     public:
 
         // Constructors & destructor
@@ -70,13 +70,16 @@ namespace ft
 
         iterator begin() { return iterator(_tree.begin()); }
 
-        //const_iterator begin() const;
-        //iterator end();
-        //const_iterator end() const;
-        //reverse_iterator rbegin();
-        //const_reverse_iterator rbegin() const;
-        //reverse_iterator rend();
-        //const_reverse_iterator rend() const;
+        const_iterator begin() const { return iterator(_tree.begin()); }
+
+        iterator end() { return iterator(_tree.end()); }
+
+        const_iterator end() const { return iterator(_tree.end()); }
+
+//        reverse_iterator rbegin() { return iterator(_tree.begin()); }
+//        const_reverse_iterator rbegin() const { return iterator(_tree.begin()); }
+//        reverse_iterator rend() { return iterator(_tree.begin()); }
+//        const_reverse_iterator rend() const { return iterator(_tree.begin()); }
 
         // Capacity
 

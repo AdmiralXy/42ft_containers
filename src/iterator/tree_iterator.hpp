@@ -6,21 +6,57 @@
 namespace ft
 {
 	template <typename T>
-	static NodeBase*
-	tree_increment(Node<T>* _x)
+	static Node<T>*
+	tree_increment(Node<T>* node)
 	{
-		if (_x && _x->left_child)
-			_x = _x->left_child;
-		return _x;
+		if (node)
+		{
+			if (node->right_child != 0)
+			{
+				node = node->right_child;
+				while (node->left_child != 0)
+					node = node->left_child;
+			}
+			else
+			{
+				Node<T>* tmp = node->parent;
+				while (node == tmp->right_child)
+				{
+					node = tmp;
+					tmp = tmp->parent;
+				}
+				if (node->right_child != tmp)
+					node = tmp;
+			}
+		}
+		return node;
 	}
 
 	template <typename T>
-	static NodeBase*
+	static Node<T>*
 	tree_decrement(Node<T>* _x)
 	{
-		if (_x && _x->right_child)
-			_x = _x->right_child;
-		return _x;
+//		if (__x->_M_color == _S_red
+//			&& __x->_M_parent->_M_parent == __x)
+//			__x = __x->_M_right;
+//		else if (__x->_M_left != 0)
+//		{
+//			_Rb_tree_node_base* __y = __x->_M_left;
+//			while (__y->_M_right != 0)
+//				__y = __y->_M_right;
+//			__x = __y;
+//		}
+//		else
+//		{
+//			_Rb_tree_node_base* __y = __x->_M_parent;
+//			while (__x == __y->_M_left)
+//			{
+//				__x = __y;
+//				__y = __y->_M_parent;
+//			}
+//			__x = __y;
+//		}
+//		return __x;
 	}
 
 	template<typename T>
@@ -33,13 +69,12 @@ namespace ft
 		typedef bidirectional_iterator_tag	iterator_category;
 		typedef std::ptrdiff_t				difference_type;
 
-		typedef tree_iterator<T>		self;
-		typedef NodeBase::base_ptr		base_ptr;
-		typedef Node<T>*				link_type;
+		typedef tree_iterator<T>			self;
+		typedef Node<T>*					link_type;
 
 		tree_iterator() : node() { }
 
-		explicit tree_iterator(base_ptr _x) : node(_x) { }
+		explicit tree_iterator(Node<T>* _x) : node(_x) { }
 
 		reference operator*() const { return *static_cast<link_type>(node)->valptr(); }
 
@@ -77,7 +112,7 @@ namespace ft
 		friend bool
 		operator!=(const self& _x, const self& _y) { return _x.node != _y.node; }
 
-		base_ptr node;
+		Node<T>* node;
 	};
 }
 

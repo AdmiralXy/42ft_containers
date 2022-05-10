@@ -3,38 +3,29 @@
 
 namespace ft
 {
-	struct NodeBase
-	{
-		typedef NodeBase*			base_ptr;
-		typedef const NodeBase*		const_base_ptr;
-		NodeBase*					parent;
-
-		explicit NodeBase(NodeBase *parent)
-		{
-			this->parent = parent;
-		}
-	};
-
 	template <class T>
-	struct Node : public NodeBase
+	struct Node
 	{
 		T								value;
 		typedef Node<T>*				link_type;
+		Node<T>*						parent;
 		Node<T>*						left_child;
 		Node<T>*						right_child;
 
-		explicit Node(const T& value) : NodeBase(0), value(value), left_child(0), right_child(0) {}
+		explicit Node() : parent(0), left_child(0), right_child(0) {}
 
-		explicit Node(T value, Node *parent) : NodeBase(parent), value(value), left_child(0), right_child(0) {}
+		explicit Node(const T& value) : value(value), parent(0), left_child(0), right_child(0) {}
 
-		static base_ptr minimum(link_type x)
+		explicit Node(T value, Node *parent) : value(value), parent(parent), left_child(0), right_child(0) {}
+
+		static Node<T>* minimum(link_type x)
 		{
 			while (x->left_child != 0)
 				x = x->left_child;
 			return x;
 		}
 
-		static base_ptr maximum(link_type x)
+		static Node<T>* maximum(link_type x)
 		{
 			while (x->right_child != 0)
 				x = x->right_child;
@@ -59,10 +50,15 @@ namespace ft
 		typedef typename Alloc::template rebind<Node<T> >::other	allocator_type;
 	private:
 		Node<T>*		_root;
+		Node<T>*		_end;
 		int				_size;
 		allocator_type	_alloc;
 	public:
-		Tree() : _root(0), _size(0) { }
+		explicit Tree(const allocator_type &alloc = allocator_type()) : _root(0), _size(0), _alloc(alloc)
+		{
+			_end = _alloc.allocate(1);
+			_alloc.construct(_end, Node<T>());
+		}
 
 		Tree(const Tree &x) : _size() { *this = x; }
 
@@ -84,9 +80,11 @@ namespace ft
 			{
 				_root = _alloc.allocate(1);
 				_alloc.construct(_root, Node<T>(value));
+				set_end(_root);
 			}
 			else
 			{
+				_end->parent->right_child = 0;
 				Node<T>* A = _root;
 				Node<T>* B = A;
 				while (A != 0)
@@ -106,6 +104,7 @@ namespace ft
 					B->right_child = _alloc.allocate(1);
 					_alloc.construct(B->right_child, Node<T>(value, B));
 				}
+				set_end(_root);
 			}
 			++_size;
 			return true;
@@ -224,10 +223,7 @@ namespace ft
 
 		Node<T>* end()
 		{
-			Node<T>* tmp = _root;
-			while (tmp->right_child)
-				tmp = tmp->right_child;
-			return tmp;
+			return _end;
 		}
 
 		T base()
@@ -266,6 +262,15 @@ namespace ft
 				_alloc.destroy(node);
 				_alloc.deallocate(node, 1);
 			}
+		}
+
+		void set_end(Node<T> *node)
+		{
+			Node<T>* tmp = node;
+			while (tmp->right_child)
+				tmp = tmp->right_child;
+			tmp->right_child = _end;
+			_end->parent = tmp;
 		}
 	};
 }
