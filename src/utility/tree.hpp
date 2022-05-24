@@ -3,61 +3,64 @@
 
 namespace ft
 {
-	template <class T>
+	template <class value_type>
 	struct Node
 	{
-		T								value;
-		typedef Node<T>*				link_type;
-		Node<T>*						parent;
-		Node<T>*						left_child;
-		Node<T>*						right_child;
+		value_type								value;
+		typedef Node<value_type>*				link_type;
+		Node<value_type>*						parent;
+		Node<value_type>*						left_child;
+		Node<value_type>*						right_child;
 
 		explicit Node() : parent(0), left_child(0), right_child(0) {}
 
-		explicit Node(const T& value) : value(value), parent(0), left_child(0), right_child(0) {}
+		explicit Node(const value_type& value) : value(value), parent(0), left_child(0), right_child(0) {}
 
-		explicit Node(T value, Node *parent) : value(value), parent(parent), left_child(0), right_child(0) {}
+		explicit Node(value_type value, Node *parent) : value(value), parent(parent), left_child(0), right_child(0) {}
 
-		static Node<T>* minimum(link_type x)
+		static Node<value_type>* minimum(link_type x)
 		{
 			while (x->left_child != 0)
 				x = x->left_child;
 			return x;
 		}
 
-		static Node<T>* maximum(link_type x)
+		static Node<value_type>* maximum(link_type x)
 		{
 			while (x->right_child != 0)
 				x = x->right_child;
 			return x;
 		}
 
-		T* valptr()
+		value_type* valptr()
 		{
 			return std::__addressof(value);
 		}
 
-		const T* valptr() const
+		const value_type* valptr() const
 		{
 			return std::__addressof(value);
 		}
 	};
 
-	template <class T, typename Compare = std::less<T>, typename Alloc = std::allocator<T> >
+	template <class Key, class T, typename Compare = std::less<Key>, typename Alloc = std::allocator<T> >
 	class Tree
 	{
 	public:
-		typedef typename Alloc::template rebind<Node<T> >::other	allocator_type;
+		typedef ft::pair<const Key, T>								value_type;
+		typedef typename Alloc::template rebind<Node<value_type> >::other	allocator_type;
+		typedef Compare												key_compare;
 	private:
-		Node<T>*		_root;
-		Node<T>*		_end;
-		int				_size;
-		allocator_type	_alloc;
+		Node<value_type>*		_root;
+		Node<value_type>*		_end;
+		int						_size;
+		allocator_type			_alloc;
+		Compare					_comp;
 	public:
-		explicit Tree(const allocator_type &alloc = allocator_type()) : _root(0), _size(0), _alloc(alloc)
+		explicit Tree(const allocator_type &alloc = allocator_type(), const key_compare &comp = key_compare()) : _root(0), _size(0), _alloc(alloc), _comp(comp)
 		{
 			_end = _alloc.allocate(1);
-			_alloc.construct(_end, Node<T>());
+			_alloc.construct(_end, Node<value_type>());
 		}
 
 		Tree(const Tree &x) : _size() { *this = x; }
@@ -74,35 +77,35 @@ namespace ft
 
 		~Tree() { clear(_root); }
 
-		bool add(T value)
+		bool add(const value_type &value)
 		{
 			if (_root == 0)
 			{
 				_root = _alloc.allocate(1);
-				_alloc.construct(_root, Node<T>(value));
+				_alloc.construct(_root, Node<value_type>(value));
 				set_end(_root);
 			}
 			else
 			{
 				_end->parent->right_child = 0;
-				Node<T>* A = _root;
-				Node<T>* B = A;
+				Node<value_type>* A = _root;
+				Node<value_type>* B = A;
 				while (A != 0)
 				{
-					if (A->value == value)
+					if (A->value.first == value.first)
 						return false;
 					B = A;
-					if (value < A->value)
+					if (_comp(value.first, A->value.first))
 						A = A->left_child;
 					else
 						A = A->right_child;
 				}
-				if (value < B->value) {
+				if (_comp(value.first, B->value.first)) {
 					B->left_child = _alloc.allocate(1);
-					_alloc.construct(B->left_child, Node<T>(value, B));
+					_alloc.construct(B->left_child, Node<value_type>(value, B));
 				} else {
 					B->right_child = _alloc.allocate(1);
-					_alloc.construct(B->right_child, Node<T>(value, B));
+					_alloc.construct(B->right_child, Node<value_type>(value, B));
 				}
 				set_end(_root);
 			}
@@ -110,18 +113,18 @@ namespace ft
 			return true;
 		}
 
-		bool find(T value)
+		bool find(const value_type &value)
 		{
 			if (_root == 0)
 				return false;
 			else
 			{
-				Node<T>* A = _root;
+				Node<value_type>* A = _root;
 				while (A != 0)
 				{
 					if (A->value == value)
 						return true;
-					else if (value < A->value)
+					else if (_comp(value.first, A->value.first))
 						A = A->left_child;
 					else
 						A = A->right_child;
@@ -130,16 +133,16 @@ namespace ft
 			return false;
 		}
 
-		void remove(T value)
+		void remove(const value_type &value)
 		{
 			if (_root != 0) {
-				Node<T>* A = _root;
-				Node<T>* B = A;
+				Node<value_type>* A = _root;
+				Node<value_type>* B = A;
 
 				while (A->value != value)
 				{
 					B = A;
-					if (value < A->value)
+					if (_comp(value.first, A->value.first))
 						A = A->left_child;
 					else
 						A = A->right_child;
@@ -154,8 +157,8 @@ namespace ft
 					_alloc.destroy(A);
 					_alloc.deallocate(A, 1);
 				} else if (A->left_child && A->right_child) {
-					Node<T>* B_parent = B;
-					for (Node<T>* tempSearch = A->right_child; tempSearch != 0;)
+					Node<value_type>* B_parent = B;
+					for (Node<value_type>* tempSearch = A->right_child; tempSearch != 0;)
 					{
 						B_parent = B;
 						B = tempSearch;
@@ -198,7 +201,7 @@ namespace ft
 			}
 		}
 
-		int size()
+		int size() const
 		{
 			return _size;
 		}
@@ -213,15 +216,15 @@ namespace ft
 			inorder_print(_root);
 		}
 
-		Node<T>* begin()
+		Node<value_type>* begin()
 		{
-			Node<T>* tmp = _root;
+			Node<value_type>* tmp = _root;
 			while (tmp->left_child)
 				tmp = tmp->left_child;
 			return tmp;
 		}
 
-		Node<T>* end()
+		Node<value_type>* end()
 		{
 			return _end;
 		}
@@ -231,7 +234,7 @@ namespace ft
 			return _root;
 		}
 	private:
-		void default_print(Node<T> *A, int space)
+		void default_print(Node<value_type> *A, int space)
 		{
 			if (A)
 			{
@@ -245,7 +248,7 @@ namespace ft
 			}
 		}
 
-		void inorder_print(Node<T> *A)
+		void inorder_print(Node<value_type> *A)
 		{
 			if (A) {
 				inorder_print(A->left_child);
@@ -254,7 +257,7 @@ namespace ft
 			}
 		}
 
-		void clear(Node<T> *node)
+		void clear(Node<value_type> *node)
 		{
 			if (node) {
 				clear(node->right_child);
@@ -264,9 +267,9 @@ namespace ft
 			}
 		}
 
-		void set_end(Node<T> *node)
+		void set_end(Node<value_type> *node)
 		{
-			Node<T>* tmp = node;
+			Node<value_type>* tmp = node;
 			while (tmp->right_child)
 				tmp = tmp->right_child;
 			tmp->right_child = _end;

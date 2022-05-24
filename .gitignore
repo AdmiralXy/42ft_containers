@@ -2,5 +2,6 @@ cmake-*
 *.o
 CMakeLists.txt
 a.out
-containers_benchmark
-containers_tests
+ctests
+cbenchmark
+.idea

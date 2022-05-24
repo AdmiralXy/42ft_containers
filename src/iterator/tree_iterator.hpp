@@ -36,27 +36,27 @@ namespace ft
 	static Node<T>*
 	tree_decrement(Node<T>* _x)
 	{
-//		if (__x->_M_color == _S_red
-//			&& __x->_M_parent->_M_parent == __x)
-//			__x = __x->_M_right;
-//		else if (__x->_M_left != 0)
-//		{
-//			_Rb_tree_node_base* __y = __x->_M_left;
-//			while (__y->_M_right != 0)
-//				__y = __y->_M_right;
-//			__x = __y;
-//		}
-//		else
-//		{
-//			_Rb_tree_node_base* __y = __x->_M_parent;
-//			while (__x == __y->_M_left)
-//			{
-//				__x = __y;
-//				__y = __y->_M_parent;
-//			}
-//			__x = __y;
-//		}
-//		return __x;
+		if (//_x->_M_color == _S_red &&
+		_x->parent->parent == _x)
+			_x = _x->right_child;
+		else if (_x->left_child != 0)
+		{
+			Node<T>* _y = _x->left_child;
+			while (_y->right_child != 0)
+				_y = _y->right_child;
+			_x = _y;
+		}
+		else
+		{
+			Node<T>* _y = _x->parent;
+			while (_x == _y->left_child)
+			{
+				_x = _y;
+				_y = _y->parent;
+			}
+			_x = _y;
+		}
+		return _x;
 	}
 
 	template<typename T>

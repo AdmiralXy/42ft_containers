@@ -1,15 +1,15 @@
 CC = c++
 RM = rm -f
 # TODO remove -g flag
-CFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98 -Isrc -I. -g
+CFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98 -Isrc -I. -Iiterator -Iutility -g
 
-NAME_UNIT_TESTS = containers_tests
-NAME_BENCHMARK = containers_benchmark
+NAME_UNIT_TESTS = ctests
+NAME_BENCHMARK = cbenchmark
 
 SRCS_UNIT_TESTS = tests/tests.cpp tests/utilities.cpp tests/vector.cpp tests/stack.cpp
 OBJS_UNIT_TESTS = $(SRCS_UNIT_TESTS:%.cpp=%.o)
 
-SRCS_BENCHMARK = benchmark/main.cpp
+SRCS_BENCHMARK = benchmark/benchmark.cpp
 OBJS_BENCHMARK = $(SRCS_BENCHMARK:%.cpp=%.o)
 
 INCLUDES = src/iterator/iterator_traits.hpp \
@@ -52,7 +52,7 @@ fclean: clean
 re: clean all
 
 tests: $(NAME_UNIT_TESTS)
-	./$(NAME_UNIT_TESTS) 1000000
+	./$(NAME_UNIT_TESTS) 10000000
 	@make fclean -s
 
 leaks: $(NAME_UNIT_TESTS)
