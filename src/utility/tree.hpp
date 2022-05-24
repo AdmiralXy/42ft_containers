@@ -229,6 +229,11 @@ namespace ft
 			return _end;
 		}
 
+		Node<value_type>* last()
+		{
+			return _end->parent;
+		}
+
 		T base()
 		{
 			return _root;

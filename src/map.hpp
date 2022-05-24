@@ -82,7 +82,7 @@ namespace ft
 
         const_iterator end() const { return iterator(_tree.end()); }
 
-        reverse_iterator rbegin() { return reverse_iterator(iterator(_tree.end())); }
+        reverse_iterator rbegin() { return reverse_iterator(iterator(_tree.last())); }
 //        const_reverse_iterator rbegin() const { return iterator(_tree.begin()); }
         reverse_iterator rend() { return reverse_iterator(iterator(_tree.begin())); }
 //        const_reverse_iterator rend() const { return iterator(_tree.begin()); }
