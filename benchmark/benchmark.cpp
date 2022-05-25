@@ -34,7 +34,7 @@ int main()
 		tmp.insert(std::make_pair(std::rand() % 100, 2));
 	}
 
-	for (std::map<int, int>::reverse_iterator i = tmp.rbegin(); i != tmp.rend(); ++i)
+	for (std::map<int, int>::reverse_iterator i = --(tmp.rend()); i != tmp.rbegin(); --i)
 	{
 		std::cout << i->first << " ";
 	}
@@ -42,7 +42,7 @@ int main()
 
 	ft::map<int, int> structure(tmp.begin(), tmp.end());
 
-	for (ft::map<int, int>::reverse_iterator i = structure.rbegin(); i != structure.rend(); ++i)
+	for (ft::map<int, int>::reverse_iterator i = --(structure.rend()); i != structure.rbegin(); --i)
 	{
 		std::cout << i->first << " ";
 	}

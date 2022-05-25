@@ -210,15 +210,11 @@ namespace ft
 			return _size;
 		}
 
+		// TODO remove func
         void print()
         {
             default_print(_root, 0);
         }
-
-		void inorder()
-		{
-			inorder_print(_root);
-		}
 
 		Node<value_type>* begin()
 		{
@@ -245,6 +241,7 @@ namespace ft
 			return _root;
 		}
 	private:
+		// TODO remove func
 		void default_print(Node<value_type> *A, int space)
 		{
 			if (A)
@@ -256,15 +253,6 @@ namespace ft
 			} else {
 				for (int i = 0; i < space; i++) std::cout << "  ";
 				std::cout << "@" << std::endl;
-			}
-		}
-
-		void inorder_print(Node<value_type> *A)
-		{
-			if (A) {
-				inorder_print(A->left_child);
-				std::cout << A->value << " ";
-				inorder_print(A->right_child);
 			}
 		}
 

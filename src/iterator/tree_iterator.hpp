@@ -31,30 +31,30 @@ namespace ft
 
 	template <typename T>
 	static Node<T>*
-	tree_decrement(Node<T>* _x)
+	tree_decrement(Node<T>* node)
 	{
 		// TODO check
-//		if (//_x->_M_color == _S_red &&
-//		_x->parent->parent == _x)
-//			_x = _x->right_child;
-		if (_x->left_child != 0)
+//		if (//node->_M_color == _S_red &&
+//		node->parent->parent == node)
+//			node = node->right_child;
+		if (node->left_child != 0)
 		{
-			Node<T>* _y = _x->left_child;
-			while (_y->right_child != 0)
-				_y = _y->right_child;
-			_x = _y;
+			Node<T>* tmp = node->left_child;
+			while (tmp->right_child != 0)
+				tmp = tmp->right_child;
+			node = tmp;
 		}
 		else
 		{
-			Node<T>* _y = _x->parent;
-			while (_x == _y->left_child)
+			Node<T>* tmp = node->parent;
+			while (node == tmp->left_child)
 			{
-				_x = _y;
-				_y = _y->parent;
+				node = tmp;
+				tmp = tmp->parent;
 			}
-			_x = _y;
+			node = tmp;
 		}
-		return _x;
+		return node;
 	}
 
 	template<typename T>
