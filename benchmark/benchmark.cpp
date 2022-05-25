@@ -26,23 +26,24 @@ public:
 
 int main()
 {
-	std::map<int, int> tmp;
+	std::map<std::string, int> tmp;
 
-	std::srand(std::time(0));
-	for (int i = 0; i < 20; ++i)
-	{
-		tmp.insert(std::make_pair(std::rand() % 100, 2));
-	}
+	tmp.insert(std::make_pair("Hello!", 2745785));
+	tmp.insert(std::make_pair("Some", 341643213));
+	tmp.insert(std::make_pair("AAAAAAA", 2214436321));
+	tmp.insert(std::make_pair("ZZZZZZZ", 253454312));
+	tmp.insert(std::make_pair("Maybe....", 543151252));
+	tmp.insert(std::make_pair("100/100", 54543532));
 
-	for (std::map<int, int>::reverse_iterator i = --(tmp.rend()); i != tmp.rbegin(); --i)
+	for (std::map<std::string, int>::iterator i = tmp.begin(); i != tmp.end(); ++i)
 	{
 		std::cout << i->first << " ";
 	}
 	std::cout << std::endl;
 
-	ft::map<int, int> structure(tmp.begin(), tmp.end());
+	ft::map<std::string, int> structure(tmp.begin(), tmp.end());
 
-	for (ft::map<int, int>::reverse_iterator i = --(structure.rend()); i != structure.rbegin(); --i)
+	for (ft::map<std::string, int>::iterator i = structure.begin(); i != structure.end(); ++i)
 	{
 		std::cout << i->first << " ";
 	}

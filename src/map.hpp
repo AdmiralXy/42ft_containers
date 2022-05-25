@@ -4,10 +4,9 @@
 #include <memory>
 #include "iterator/tree_iterator.hpp"
 
-
 namespace ft
 {
-	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<pair<const Key,T> > >
+	template<class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
 	class map
 	{
     public:
@@ -42,9 +41,8 @@ namespace ft
 	private:
 		Compare _comp;
 		allocator_type _alloc;
-
-	public:
 		Tree<Key, T, Compare, Alloc> _tree;
+	public:
 		// Constructors & destructor
 
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
@@ -92,24 +90,34 @@ namespace ft
 
         // Capacity
 
-        //bool empty() const;
+        bool empty() const
+		{
+			return !_tree.size();
+		}
+
         size_type size() const
 		{
 			return _tree.size();
 		}
-        //size_type max_size() const;
+
+        size_type max_size() const
+		{
+			return _alloc.max_size();
+		}
 
         // Element access
 
-        //mapped_type& operator[](const key_type& k);
+        mapped_type& operator[](const key_type& k)
+		{
+			return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
+		}
 
 		// Modifiers
 
-		pair<iterator,bool> insert(const value_type& val)
+		ft::pair<iterator, bool> insert(const value_type& val)
 		{
-			//if (_tree.find())
-			_tree.add(val);
-			return ft::make_pair(iterator(_tree.begin()), false);
+			ft::pair<Node<value_type>*, bool> pair = _tree.add(val);
+			return ft::make_pair(iterator(pair.first), pair.second);
 		}
 		//iterator insert(iterator position, const value_type& val);
 
@@ -135,8 +143,8 @@ namespace ft
 		//const_iterator lower_bound(const key_type& k) const;
 		//iterator upper_bound(const key_type& k);
 		//const_iterator upper_bound(const key_type& k) const;
-		//pair<const_iterator,const_iterator> equal_range(const key_type& k) const;
-		//pair<iterator,iterator>             equal_range(const key_type& k);
+		//ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
+		//ft::pair<iterator, iterator>             equal_range(const key_type& k);
 
 		// Allocator
 

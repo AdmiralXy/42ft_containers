@@ -80,12 +80,14 @@ namespace ft
 
 		~Tree() { clear(_root); }
 
-		bool add(const value_type &value)
+		ft::pair<Node<value_type>*, bool> add(const value_type &value)
 		{
+			Node<value_type>* inserted = 0;
 			if (_root == 0)
 			{
 				_root = _alloc.allocate(1);
 				_alloc.construct(_root, Node<value_type>(value));
+				inserted = _root;
 			}
 			else
 			{
@@ -96,7 +98,7 @@ namespace ft
 				while (A != 0)
 				{
 					if (A->value.first == value.first)
-						return false;
+						return ft::make_pair(A, false);
 					B = A;
 					if (_comp(value.first, A->value.first))
 						A = A->left_child;
@@ -106,15 +108,17 @@ namespace ft
 				if (_comp(value.first, B->value.first)) {
 					B->left_child = _alloc.allocate(1);
 					_alloc.construct(B->left_child, Node<value_type>(value, B));
+					inserted = B->left_child;
 				} else {
 					B->right_child = _alloc.allocate(1);
 					_alloc.construct(B->right_child, Node<value_type>(value, B));
+					inserted = B->right_child;
 				}
 			}
 			set_rend(_root);
 			set_end(_root);
 			++_size;
-			return true;
+			return ft::make_pair(inserted, true);
 		}
 
 		bool find(const value_type &value)
