@@ -2,7 +2,8 @@
 #define INC_42FT_CONTAINERS_MAP_H
 
 #include <memory>
-#include "iterator/tree_iterator.hpp"
+#include "utility/tree.hpp"
+#include "iterator/reverse_iterator.hpp"
 
 namespace ft
 {
@@ -32,8 +33,9 @@ namespace ft
 		typedef typename allocator_type::const_pointer						const_pointer;
 		typedef typename allocator_type::reference							reference;
 		typedef typename allocator_type::const_reference					const_reference;
-		typedef ft::tree_iterator<value_type >								iterator;
-		typedef ft::tree_iterator<value_type >								const_iterator;
+		typedef ft::Tree<Key, T, Compare, Alloc>							rep_type;
+		typedef typename rep_type::iterator									iterator;
+		typedef typename rep_type::const_iterator 							const_iterator;
 		typedef ft::reverse_iterator<iterator>								reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 		typedef typename ft::iterator_traits<iterator>::difference_type		difference_type;
@@ -41,7 +43,7 @@ namespace ft
 	private:
 		Compare _comp;
 		allocator_type _alloc;
-		Tree<Key, T, Compare, Alloc> _tree;
+		rep_type _tree;
 	public:
 		// Constructors & destructor
 
@@ -68,25 +70,26 @@ namespace ft
             _alloc = x._alloc;
             _comp = x._comp;
             _tree = x._tree;
+			return *this;
         }
 
         // Iterators
 
-        iterator begin() { return iterator(_tree.begin()); }
+        iterator begin() { return _tree.begin(); }
 
-        const_iterator begin() const { return iterator(_tree.begin()); }
+        const_iterator begin() const { return _tree.begin(); }
 
-        iterator end() { return iterator(_tree.end()); }
+        iterator end() { return _tree.end(); }
 
-        const_iterator end() const { return iterator(_tree.end()); }
+        const_iterator end() const { return _tree.end(); }
 
-        reverse_iterator rbegin() { return reverse_iterator(iterator(_tree.rbegin())); }
+        reverse_iterator rbegin() { return reverse_iterator(_tree.rbegin()); }
 
-        const_reverse_iterator rbegin() const { return iterator(_tree.rbegin()); }
+        const_reverse_iterator rbegin() const { return reverse_iterator(_tree.rbegin()); }
 
-        reverse_iterator rend() { return reverse_iterator(iterator(_tree.rend())); }
+        reverse_iterator rend() { return reverse_iterator(_tree.rend()); }
 
-        const_reverse_iterator rend() const { return iterator(_tree.rend()); }
+        const_reverse_iterator rend() const { return reverse_iterator(_tree.rend()); }
 
         // Capacity
 
@@ -116,10 +119,13 @@ namespace ft
 
 		ft::pair<iterator, bool> insert(const value_type& val)
 		{
-			ft::pair<Node<value_type>*, bool> pair = _tree.add(val);
-			return ft::make_pair(iterator(pair.first), pair.second);
+			return _tree.add(val);
 		}
-		//iterator insert(iterator position, const value_type& val);
+
+//		iterator insert(iterator position, const value_type& val)
+//		{
+//
+//		}
 
 		//template <class InputIterator>
 		//void insert(InputIterator first, InputIterator last);

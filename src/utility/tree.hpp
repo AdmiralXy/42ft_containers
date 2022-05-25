@@ -1,6 +1,9 @@
 #ifndef INC_42FT_CONTAINERS_TREE_H
 #define INC_42FT_CONTAINERS_TREE_H
 
+#include "utility.hpp"
+#include "../iterator/iterator_traits.hpp"
+
 namespace ft
 {
 	template <class value_type>
@@ -43,6 +46,114 @@ namespace ft
 		}
 	};
 
+	template <typename T>
+	static Node<T>*
+	tree_increment(Node<T>* node)
+	{
+		if (node->right_child != 0)
+		{
+			node = node->right_child;
+			while (node->left_child != 0)
+				node = node->left_child;
+		}
+		else
+		{
+			Node<T>* tmp = node->parent;
+			while (node == tmp->right_child)
+			{
+				node = tmp;
+				tmp = tmp->parent;
+			}
+			if (node->right_child != tmp)
+				node = tmp;
+		}
+		return node;
+	}
+
+	template <typename T>
+	static Node<T>*
+	tree_decrement(Node<T>* node)
+	{
+		// TODO check
+//		if (//node->_M_color == _S_red &&
+//		node->parent->parent == node)
+//			node = node->right_child;
+		if (node->left_child != 0)
+		{
+			Node<T>* tmp = node->left_child;
+			while (tmp->right_child != 0)
+				tmp = tmp->right_child;
+			node = tmp;
+		}
+		else
+		{
+			Node<T>* tmp = node->parent;
+			while (node == tmp->left_child)
+			{
+				node = tmp;
+				tmp = tmp->parent;
+			}
+			node = tmp;
+		}
+		return node;
+	}
+
+	template<typename T>
+	struct tree_iterator
+	{
+		typedef T  value_type;
+		typedef T& reference;
+		typedef T* pointer;
+
+		typedef bidirectional_iterator_tag	iterator_category;
+		typedef std::ptrdiff_t				difference_type;
+
+		typedef tree_iterator<T>			self;
+		typedef Node<T>*					link_type;
+
+		tree_iterator() : node() { }
+
+		explicit tree_iterator(Node<T>* _x) : node(_x) { }
+
+		reference operator*() const { return *static_cast<link_type>(node)->valptr(); }
+
+		pointer operator->() const { return static_cast<link_type> (node)->valptr(); }
+
+		self& operator++()
+		{
+			node = tree_increment<T>(node);
+			return *this;
+		}
+
+		self operator++(int)
+		{
+			self _tmp = *this;
+			node = tree_increment<T>(node);
+			return _tmp;
+		}
+
+		self& operator--()
+		{
+			node = tree_decrement<T>(node);
+			return *this;
+		}
+
+		self operator--(int)
+		{
+			self _tmp = *this;
+			node = tree_decrement<T>(node);
+			return _tmp;
+		}
+
+		friend bool
+		operator==(const self& _x, const self& _y) { return _x.node == _y.node; }
+
+		friend bool
+		operator!=(const self& _x, const self& _y) { return _x.node != _y.node; }
+
+		Node<T>* node;
+	};
+
 	template <class Key, class T, typename Compare = std::less<Key>, typename Alloc = std::allocator<T> >
 	class Tree
 	{
@@ -50,6 +161,8 @@ namespace ft
 		typedef ft::pair<const Key, T>										value_type;
 		typedef typename Alloc::template rebind<Node<value_type> >::other	allocator_type;
 		typedef Compare														key_compare;
+		typedef ft::tree_iterator<value_type>								iterator;
+		typedef ft::tree_iterator<value_type>								const_iterator;
 	private:
 		Node<value_type>*		_root;
 		Node<value_type>*		_rend;
@@ -66,23 +179,38 @@ namespace ft
 			_alloc.construct(_end, Node<value_type>());
 		}
 
-		Tree(const Tree &x) : _size() { *this = x; }
+		Tree(const Tree &x) : _size()
+		{
+			*this = x;
+		}
 
 		Tree& operator=(const Tree& x)
 		{
 			if (this == &x)
 				return *this;
 			clear(_root);
-			_root = x.base();
-			_size = x.size();
+			_alloc = x._alloc;
+			_comp = x._comp;
+			for (iterator it = x.begin(); it != x.end(); ++it)
+				add(*it);
 			return *this;
 		}
 
-		~Tree() { clear(_root); }
-
-		ft::pair<Node<value_type>*, bool> add(const value_type &value)
+		~Tree()
 		{
-			Node<value_type>* inserted = 0;
+			if (!_root) {
+				_alloc.destroy(_end);
+				_alloc.deallocate(_end, 1);
+				_alloc.destroy(_rend);
+				_alloc.deallocate(_rend, 1);
+			} else {
+				clear(_root);
+			}
+		}
+
+		ft::pair<iterator, bool> add(const value_type &value)
+		{
+			Node<value_type>* inserted;
 			if (_root == 0)
 			{
 				_root = _alloc.allocate(1);
@@ -118,7 +246,7 @@ namespace ft
 			set_rend(_root);
 			set_end(_root);
 			++_size;
-			return ft::make_pair(inserted, true);
+			return ft::make_pair(iterator(inserted), true);
 		}
 
 		bool find(const value_type &value)
@@ -214,30 +342,24 @@ namespace ft
 			return _size;
 		}
 
-		// TODO remove func
-        void print()
-        {
-            default_print(_root, 0);
-        }
-
-		Node<value_type>* begin()
+		iterator begin() const
 		{
-			return _rend->parent;
+			return iterator(_rend->parent);
 		}
 
-		Node<value_type>* rbegin()
+		iterator rbegin() const
 		{
-			return _end->parent;
+			return iterator(_end->parent);
 		}
 
-		Node<value_type>* end()
+		iterator end() const
 		{
-			return _end;
+			return iterator(_end);
 		}
 
-		Node<value_type>* rend()
+		iterator rend() const
 		{
-			return _rend;
+			return iterator(_rend);
 		}
 
 		T base()
@@ -245,21 +367,6 @@ namespace ft
 			return _root;
 		}
 	private:
-		// TODO remove func
-		void default_print(Node<value_type> *A, int space)
-		{
-			if (A)
-			{
-				default_print(A->right_child, space + 1);
-				for (int i = 0; i < space; i++) std::cout << "  ";
-				std::cout << A->value << std::endl;
-				default_print(A->left_child, space + 1);
-			} else {
-				for (int i = 0; i < space; i++) std::cout << "  ";
-				std::cout << "@" << std::endl;
-			}
-		}
-
 		void clear(Node<value_type> *node)
 		{
 			if (node) {

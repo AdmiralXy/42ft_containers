@@ -19,5 +19,7 @@ int main(int argc, char *argv[])
 	std::cout << std::endl;
 	stack();
 	std::cout << std::endl;
+	map();
+	std::cout << std::endl;
 	return 0;
 }

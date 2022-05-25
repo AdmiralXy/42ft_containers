@@ -3,5 +3,6 @@
 
 void vector();
 void stack();
+void map();
 
 #endif

@@ -1,7 +1,5 @@
-#include "../src/stack.hpp"
 #include "../src/map.hpp"
 #include <iostream>
-#include <vector>
 #include <map>
 #include <ctime>
 
@@ -48,4 +46,8 @@ int main()
 		std::cout << i->first << " ";
 	}
 	std::cout << std::endl;
+
+	ft::map<std::string, int> structure2;
+
+	(void)structure2;
 }

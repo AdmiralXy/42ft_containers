@@ -95,7 +95,8 @@ namespace ft
 
 		normal_iterator& operator+=(difference_type _n)
 		{
-			current += _n; return *this;
+			current += _n;
+			return *this;
 		}
 
 		normal_iterator operator+(difference_type _n) const
@@ -105,7 +106,8 @@ namespace ft
 
 		normal_iterator& operator-=(difference_type _n)
 		{
-			current -= _n; return *this;
+			current -= _n;
+			return *this;
 		}
 
 		normal_iterator operator-(difference_type _n) const
