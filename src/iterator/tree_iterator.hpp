@@ -9,25 +9,22 @@ namespace ft
 	static Node<T>*
 	tree_increment(Node<T>* node)
 	{
-		if (node)
+		if (node->right_child != 0)
 		{
-			if (node->right_child != 0)
+			node = node->right_child;
+			while (node->left_child != 0)
+				node = node->left_child;
+		}
+		else
+		{
+			Node<T>* tmp = node->parent;
+			while (node == tmp->right_child)
 			{
-				node = node->right_child;
-				while (node->left_child != 0)
-					node = node->left_child;
+				node = tmp;
+				tmp = tmp->parent;
 			}
-			else
-			{
-				Node<T>* tmp = node->parent;
-				while (node == tmp->right_child)
-				{
-					node = tmp;
-					tmp = tmp->parent;
-				}
-				if (node->right_child != tmp)
-					node = tmp;
-			}
+			if (node->right_child != tmp)
+				node = tmp;
 		}
 		return node;
 	}
@@ -36,10 +33,11 @@ namespace ft
 	static Node<T>*
 	tree_decrement(Node<T>* _x)
 	{
-		if (//_x->_M_color == _S_red &&
-		_x->parent->parent == _x)
-			_x = _x->right_child;
-		else if (_x->left_child != 0)
+		// TODO check
+//		if (//_x->_M_color == _S_red &&
+//		_x->parent->parent == _x)
+//			_x = _x->right_child;
+		if (_x->left_child != 0)
 		{
 			Node<T>* _y = _x->left_child;
 			while (_y->right_child != 0)

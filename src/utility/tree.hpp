@@ -47,11 +47,12 @@ namespace ft
 	class Tree
 	{
 	public:
-		typedef ft::pair<const Key, T>								value_type;
+		typedef ft::pair<const Key, T>										value_type;
 		typedef typename Alloc::template rebind<Node<value_type> >::other	allocator_type;
-		typedef Compare												key_compare;
+		typedef Compare														key_compare;
 	private:
 		Node<value_type>*		_root;
+		Node<value_type>*		_rend;
 		Node<value_type>*		_end;
 		int						_size;
 		allocator_type			_alloc;
@@ -59,6 +60,8 @@ namespace ft
 	public:
 		explicit Tree(const allocator_type &alloc = allocator_type(), const key_compare &comp = key_compare()) : _root(0), _size(0), _alloc(alloc), _comp(comp)
 		{
+			_rend = _alloc.allocate(1);
+			_alloc.construct(_rend, Node<value_type>());
 			_end = _alloc.allocate(1);
 			_alloc.construct(_end, Node<value_type>());
 		}
@@ -83,11 +86,11 @@ namespace ft
 			{
 				_root = _alloc.allocate(1);
 				_alloc.construct(_root, Node<value_type>(value));
-				set_end(_root);
 			}
 			else
 			{
 				_end->parent->right_child = 0;
+				_rend->parent->left_child = 0;
 				Node<value_type>* A = _root;
 				Node<value_type>* B = A;
 				while (A != 0)
@@ -107,8 +110,9 @@ namespace ft
 					B->right_child = _alloc.allocate(1);
 					_alloc.construct(B->right_child, Node<value_type>(value, B));
 				}
-				set_end(_root);
 			}
+			set_rend(_root);
+			set_end(_root);
 			++_size;
 			return true;
 		}
@@ -218,10 +222,12 @@ namespace ft
 
 		Node<value_type>* begin()
 		{
-			Node<value_type>* tmp = _root;
-			while (tmp->left_child)
-				tmp = tmp->left_child;
-			return tmp;
+			return _rend->parent;
+		}
+
+		Node<value_type>* rbegin()
+		{
+			return _end->parent;
 		}
 
 		Node<value_type>* end()
@@ -229,9 +235,9 @@ namespace ft
 			return _end;
 		}
 
-		Node<value_type>* last()
+		Node<value_type>* rend()
 		{
-			return _end->parent;
+			return _rend;
 		}
 
 		T base()
@@ -279,6 +285,15 @@ namespace ft
 				tmp = tmp->right_child;
 			tmp->right_child = _end;
 			_end->parent = tmp;
+		}
+
+		void set_rend(Node<value_type> *node)
+		{
+			Node<value_type>* tmp = node;
+			while (tmp->left_child)
+				tmp = tmp->left_child;
+			tmp->left_child = _rend;
+			_rend->parent = tmp;
 		}
 	};
 }

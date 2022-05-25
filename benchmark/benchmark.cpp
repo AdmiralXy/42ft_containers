@@ -26,32 +26,25 @@ public:
 
 int main()
 {
-	ft::map<int, int> map;
+	std::map<int, int> tmp;
 
-	map.insert(ft::make_pair(1, 2));
-	map.insert(ft::make_pair(3, 4));
-	map.insert(ft::make_pair(5, 6));
+	std::srand(std::time(0));
+	for (int i = 0; i < 20; ++i)
+	{
+		tmp.insert(std::make_pair(std::rand() % 100, 2));
+	}
 
-	ft::map<int, int>::reverse_iterator it = map.rbegin();
-	// 5 3 1
-	for (; it != map.rend(); ++it)
-		std::cout << it->first << " => " << it->second << '\n';
+	for (std::map<int, int>::reverse_iterator i = tmp.rbegin(); i != tmp.rend(); ++i)
+	{
+		std::cout << i->first << " ";
+	}
+	std::cout << std::endl;
 
-//	std::map<int, int> tmp;
-//
-//	tmp.insert(std::make_pair(1, 2));
-//	tmp.insert(std::make_pair(3, 4));
-//	tmp.insert(std::make_pair(5, 6));
-//
-//	for (std::map<int, int>::reverse_iterator i = tmp.rbegin(); i != tmp.rend(); ++i)
-//	{
-//		std::cout << i->first << std::endl;
-//	}
-//
-//	ft::map<int, int> structure(tmp.begin(), tmp.end());
-//
-//	for (ft::map<int, int>::iterator i = structure.begin(); i != structure.end(); ++i)
-//	{
-//		std::cout << *i << std::endl;
-//	}
+	ft::map<int, int> structure(tmp.begin(), tmp.end());
+
+	for (ft::map<int, int>::reverse_iterator i = structure.rbegin(); i != structure.rend(); ++i)
+	{
+		std::cout << i->first << " ";
+	}
+	std::cout << std::endl;
 }

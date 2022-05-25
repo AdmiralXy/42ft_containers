@@ -42,16 +42,16 @@ namespace ft
 	private:
 		Compare _comp;
 		allocator_type _alloc;
-		Tree<Key, T, Compare, Alloc> _tree;
+
 	public:
+		Tree<Key, T, Compare, Alloc> _tree;
 		// Constructors & destructor
 
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
 		: _comp(comp), _alloc(alloc) {}
 
 		template <class InputIterator>
-        map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-				const allocator_type& alloc = allocator_type()) : _comp(comp), _alloc(alloc)
+        map(InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _comp(comp), _alloc(alloc)
 		{
 			while (first != last)
 			{
@@ -82,10 +82,13 @@ namespace ft
 
         const_iterator end() const { return iterator(_tree.end()); }
 
-        reverse_iterator rbegin() { return reverse_iterator(iterator(_tree.last())); }
-//        const_reverse_iterator rbegin() const { return iterator(_tree.begin()); }
-        reverse_iterator rend() { return reverse_iterator(iterator(_tree.begin())); }
-//        const_reverse_iterator rend() const { return iterator(_tree.begin()); }
+        reverse_iterator rbegin() { return reverse_iterator(iterator(_tree.rbegin())); }
+
+        const_reverse_iterator rbegin() const { return iterator(_tree.rbegin()); }
+
+        reverse_iterator rend() { return reverse_iterator(iterator(_tree.rend())); }
+
+        const_reverse_iterator rend() const { return iterator(_tree.rend()); }
 
         // Capacity
 
