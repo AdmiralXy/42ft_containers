@@ -24,30 +24,11 @@ public:
 
 int main()
 {
-	std::map<std::string, int> tmp;
+	ft::map<int, int> temp;
 
-	tmp.insert(std::make_pair("Hello!", 2745785));
-	tmp.insert(std::make_pair("Some", 341643213));
-	tmp.insert(std::make_pair("AAAAAAA", 2214436321));
-	tmp.insert(std::make_pair("ZZZZZZZ", 253454312));
-	tmp.insert(std::make_pair("Maybe....", 543151252));
-	tmp.insert(std::make_pair("100/100", 54543532));
+	temp.insert(std::make_pair(1, 5));
 
-	for (std::map<std::string, int>::iterator i = tmp.begin(); i != tmp.end(); ++i)
-	{
-		std::cout << i->first << " ";
-	}
-	std::cout << std::endl;
+	temp.insert(*(temp.begin()));
 
-	ft::map<std::string, int> structure(tmp.begin(), tmp.end());
-
-	for (ft::map<std::string, int>::iterator i = structure.begin(); i != structure.end(); ++i)
-	{
-		std::cout << i->first << " ";
-	}
-	std::cout << std::endl;
-
-	ft::map<std::string, int> structure2;
-
-	(void)structure2;
+	std::cout << temp.size() << std::endl;
 }

@@ -225,8 +225,11 @@ namespace ft
 				Node<value_type>* B = A;
 				while (A != 0)
 				{
-					if (A->value.first == value.first)
+					if (A->value.first == value.first) {
+						set_rend(_root);
+						set_end(_root);
 						return ft::make_pair(A, false);
+					}
 					B = A;
 					if (_comp(value.first, A->value.first))
 						A = A->left_child;

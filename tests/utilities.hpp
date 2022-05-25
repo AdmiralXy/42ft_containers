@@ -3,6 +3,8 @@
 
 #include <string>
 
+#define SEED 338458430
+
 extern int N;
 
 void print_title(std::string test_name);

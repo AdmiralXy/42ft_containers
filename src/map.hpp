@@ -55,8 +55,7 @@ namespace ft
 		{
 			while (first != last)
 			{
-				value_type value = ft::make_pair(first->first, first->second);
-				_tree.add(value);
+				insert(*first);
 				++first;
 			}
 		}
