@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 #include <map>
 #include "map.hpp"
 #include "utilities.hpp"
@@ -20,6 +21,7 @@ bool equal(ft::map<T, T> &map1, std::map<T, T> &map2)
 	while (it1 != map1.end())
 	{
 		if (it1->first != it2->first || it1->second != it2->second)
+			return false;
 		it1++;
 		it2++;
 	}
@@ -70,6 +72,10 @@ public:
 	}
 };
 
+std::map<int, int> small = TemplateMap::getSmall();
+std::map<int, int> medium = TemplateMap::getMedium();
+std::map<int, int> large = TemplateMap::getLarge();
+
 // Tests
 
 template<typename T>
@@ -83,8 +89,7 @@ template<typename T>
 T constructor_iterators()
 {
 	std::srand(SEED);
-	std::map<int, int> tmp = TemplateMap::getMedium();
-	T map(tmp.begin(), tmp.end());
+	T map(medium.begin(), medium.end());
 	return map;
 }
 
@@ -92,8 +97,7 @@ template<typename T>
 T constructor_copy()
 {
 	std::srand(SEED);
-	std::map<int, int> tmp = TemplateMap::getMedium();
-	T map_tmp(tmp.begin(), tmp.end());
+	T map_tmp(medium.begin(), medium.end());
 	T map(map_tmp);
 	return map;
 }
@@ -102,8 +106,7 @@ template<typename T>
 T operator_assign()
 {
 	std::srand(SEED);
-	std::map<int, int> tmp = TemplateMap::getMedium();
-	T map_tmp(tmp.begin(), tmp.end());
+	T map_tmp(medium.begin(), medium.end());
 	T map;
 	map = map_tmp;
 	return map;
@@ -112,8 +115,7 @@ T operator_assign()
 template<typename T>
 T begin()
 {
-	std::map<int, int> tmp = TemplateMap::getMedium();
-	T map_tmp(tmp.begin(), tmp.end());
+	T map_tmp(medium.begin(), medium.end());
 	T map;
 	map.insert(*(map_tmp.begin()));
 	map.insert(*(++map_tmp.begin()));
@@ -124,8 +126,7 @@ T begin()
 template<typename T>
 T end()
 {
-	std::map<int, int> tmp = TemplateMap::getMedium();
-	T map_tmp(tmp.begin(), tmp.end());
+	T map_tmp(medium.begin(), medium.end());
 	T map;
 	map.insert(*(--map_tmp.end()));
 	map.insert(*(--(--map_tmp.end())));
@@ -136,8 +137,7 @@ T end()
 template<typename T>
 T rbegin()
 {
-	std::map<int, int> tmp = TemplateMap::getMedium();
-	T map_tmp(tmp.begin(), tmp.end());
+	T map_tmp(medium.begin(), medium.end());
 	T map;
 	map.insert(*(map_tmp.rbegin()));
 	map.insert(*(++map_tmp.rbegin()));
@@ -148,8 +148,7 @@ T rbegin()
 template<typename T>
 T rend()
 {
-	std::map<int, int> tmp = TemplateMap::getMedium();
-	T map_tmp(tmp.begin(), tmp.end());
+	T map_tmp(medium.begin(), medium.end());
 	T map;
 	map.insert(*(--map_tmp.rend()));
 	map.insert(*(--(--map_tmp.rend())));
@@ -169,6 +168,7 @@ T operator_index()
 	return map;
 }
 
+// TODO add return validate
 template<typename T>
 T insert_val()
 {
@@ -176,6 +176,26 @@ T insert_val()
 	T map;
 	for (int i = 0; i < N; ++i)
 		map.insert(std::make_pair(std::rand(), std::rand()));
+	return map;
+}
+
+template<typename T>
+T insert_pos_val()
+{
+	std::srand(SEED);
+	T map;
+	for (int i = 0; i < N; ++i)
+		map.insert(map.end(), std::make_pair(std::rand(), std::rand()));
+	return map;
+}
+
+template<typename T>
+T insert_iterators()
+{
+	// TODO fix
+	T map;
+	map.insert(large.begin(), large.end());
+	std::cout << map.size() << std::endl;
 	return map;
 }
 
@@ -192,4 +212,6 @@ void map()
 	run_case("rend", &rend< ft::map<int, int> >, &rend< std::map<int, int> >);
 	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
 	run_case("insert(val)", &insert_val< ft::map<int, int> >, &insert_val< std::map<int, int> >);
+	run_case("insert(position, val)", &insert_pos_val< ft::map<int, int> >, &insert_pos_val< std::map<int, int> >);
+	run_case("insert(iterators)", &insert_iterators< ft::map<int, int> >, &insert_iterators< std::map<int, int> >);
 }

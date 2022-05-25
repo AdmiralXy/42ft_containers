@@ -121,13 +121,21 @@ namespace ft
 			return _tree.add(val);
 		}
 
-//		iterator insert(iterator position, const value_type& val)
-//		{
-//
-//		}
+		iterator insert(iterator position, const value_type& val)
+		{
+			(void)position;
+			return _tree.add(val).first;
+		}
 
-		//template <class InputIterator>
-		//void insert(InputIterator first, InputIterator last);
+		template <class InputIterator>
+		void insert(InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				insert(*first);
+				++first;
+			}
+		}
 
 		//void erase(iterator position);
 		//size_type erase(const key_type& k);
