@@ -31,6 +31,8 @@ INCLUDES = src/iterator/iterator_traits.hpp \
 	@$(CC) $(CFLAGS) -c $< -o $(<:.cpp=.o)
 	@echo "Building: \033[0;34m$<\033[0m"
 
+all: $(NAME_UNIT_TESTS) $(NAME_BENCHMARK)
+
 $(NAME_UNIT_TESTS): $(OBJS_UNIT_TESTS)
 	@$(CC) $(CFLAGS) $(OBJS_UNIT_TESTS) -o $(NAME_UNIT_TESTS)
 	@echo "Binary \033[0;32m$(NAME_UNIT_TESTS)\033[0m successfully linked!"
@@ -38,8 +40,6 @@ $(NAME_UNIT_TESTS): $(OBJS_UNIT_TESTS)
 $(NAME_BENCHMARK): $(OBJS_BENCHMARK)
 	@$(CC) $(CFLAGS) $(OBJS_BENCHMARK) -o $(NAME_BENCHMARK)
 	@echo "Binary \033[0;32m$(NAME_BENCHMARK)\033[0m successfully linked!"
-
-all: $(NAME_UNIT_TESTS) $(NAME_BENCHMARK)
 
 clean:
 	@$(RM) $(OBJS_UNIT_TESTS) $(OBJS_BENCHMARK)
@@ -58,5 +58,3 @@ tests: $(NAME_UNIT_TESTS)
 leaks: $(NAME_UNIT_TESTS)
 	valgrind --leak-check=full --leak-resolution=med --vgdb=no -s ./$(NAME_UNIT_TESTS) 100000
 	@make fclean -s
-
-.PHONY: all
