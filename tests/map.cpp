@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <vector>
 #include <map>
 #include "map.hpp"
 #include "utilities.hpp"
@@ -190,9 +191,13 @@ T insert_pos_val()
 template<typename T>
 T insert_iterators()
 {
-	T map;
-	map.insert(medium.begin(), medium.end());
-	return map;
+//	std::srand(SEED);
+//	std::vector<std::pair<const int, int> > vector;
+//	for (int i = 0; i < N; ++i)
+//		vector.insert(vector.end(), std::make_pair(std::rand(), std::rand()));
+//	T map;
+//	map.insert(vector.begin(), vector.end());
+//	return map;
 }
 
 template<typename T>
