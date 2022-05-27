@@ -24,11 +24,25 @@ public:
 
 int main()
 {
-	ft::map<int, int> temp;
+	User *user1 = new User(1);
+	User *user2 = new User(2);
+	User *user3 = new User(3);
+	User *user4 = new User(4);
+	User *user5 = new User(5);
 
-	temp.insert(std::make_pair(1, 5));
+	ft::map<User*, int> map;
 
-	temp.insert(*(temp.begin()));
+	map.insert(ft::make_pair(user1, 5));
+	map.insert(ft::make_pair(user2, 5));
+	map.insert(ft::make_pair(user4, 5));
+	map.insert(ft::make_pair(user3, 5));
+	map.insert(ft::make_pair(user5, 5));
+	map.insert(ft::make_pair(user3, 5));
 
-	std::cout << temp.size() << std::endl;
+	std::cout << map.size() << std::endl;
+	delete user1;
+	delete user2;
+	delete user3;
+	delete user4;
+	delete user5;
 }

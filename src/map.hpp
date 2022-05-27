@@ -132,7 +132,7 @@ namespace ft
 		{
 			while (first != last)
 			{
-				insert(*first);
+				_tree.add(*first);
 				++first;
 			}
 		}
@@ -140,12 +140,30 @@ namespace ft
 		//void erase(iterator position);
 		//size_type erase(const key_type& k);
 		//void erase(iterator first, iterator last);
-		//void swap(map& x);
-		//void clear();
+
+		void swap(map& x)
+		{
+			std::swap(_alloc, x._alloc);
+			std::swap(_comp, x._comp);
+			_tree.swap(x._tree);
+		}
+
+		void clear()
+		{
+			_tree.clear();
+		}
 
 		// Observers
-		//key_compare key_comp() const;
-		//value_compare value_comp() const;
+
+		key_compare key_comp() const
+		{
+			return _comp;
+		}
+
+		value_compare value_comp() const
+		{
+			return value_compare(key_comp());
+		}
 
 		// Operations
 

@@ -7,8 +7,6 @@
 
 // Utility
 
-enum Size { SM, MD, LG };
-
 template<typename T>
 bool equal(ft::map<T, T> &map1, std::map<T, T> &map2)
 {
@@ -66,7 +64,7 @@ public:
 	{
 		std::srand(SEED);
 		std::map<int, int> map;
-		for (int i = 0; i < N; ++i)
+		for (int i = 0; i < 5000; ++i)
 			map.insert(std::make_pair(std::rand(), std::rand()));
 		return map;
 	}
@@ -192,10 +190,67 @@ T insert_pos_val()
 template<typename T>
 T insert_iterators()
 {
-	// TODO fix
 	T map;
-	map.insert(large.begin(), large.end());
-	std::cout << map.size() << std::endl;
+	map.insert(medium.begin(), medium.end());
+	return map;
+}
+
+template<typename T>
+T erase_position()
+{
+	// TODO add test
+	T map(medium.begin(), medium.end());
+	return map;
+}
+
+template<typename T>
+T erase_key()
+{
+	// TODO add test
+	T map(medium.begin(), medium.end());
+	return map;
+}
+
+template<typename T>
+T erase_iterators()
+{
+	// TODO add test
+	T map(medium.begin(), medium.end());
+	return map;
+}
+
+template<typename T>
+T swap()
+{
+	T map_tmp(medium.begin(), medium.end());
+	T map(small.begin(), small.end());
+	map.swap(map_tmp);
+	return map;
+}
+
+template<typename T>
+T clear()
+{
+	T map(medium.begin(), medium.end());
+	map.clear();
+	return map;
+}
+
+template<typename T>
+T key_comp()
+{
+	// TODO add test
+	T map(medium.begin(), medium.end());
+	map.clear();
+	return map;
+}
+
+template<typename T>
+T value_comp()
+{
+	// TODO add test
+	T map(medium.begin(), medium.end());
+	map.clear();
 	return map;
 }
 
@@ -210,8 +265,15 @@ void map()
 	run_case("end", &end< ft::map<int, int> >, &end< std::map<int, int> >);
 	run_case("rbegin", &rbegin< ft::map<int, int> >, &rbegin< std::map<int, int> >);
 	run_case("rend", &rend< ft::map<int, int> >, &rend< std::map<int, int> >);
-	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
-	run_case("insert(val)", &insert_val< ft::map<int, int> >, &insert_val< std::map<int, int> >);
-	run_case("insert(position, val)", &insert_pos_val< ft::map<int, int> >, &insert_pos_val< std::map<int, int> >);
-	run_case("insert(iterators)", &insert_iterators< ft::map<int, int> >, &insert_iterators< std::map<int, int> >);
+//	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
+//	run_case("insert(val)", &insert_val< ft::map<int, int> >, &insert_val< std::map<int, int> >);
+//	run_case("insert(position, val)", &insert_pos_val< ft::map<int, int> >, &insert_pos_val< std::map<int, int> >);
+//	run_case("insert(iterators)", &insert_iterators< ft::map<int, int> >, &insert_iterators< std::map<int, int> >);
+	run_case("erase(position)", &erase_position< ft::map<int, int> >, &erase_position< std::map<int, int> >);
+	run_case("erase(key)", &erase_key< ft::map<int, int> >, &erase_key< std::map<int, int> >);
+	run_case("erase(iterators)", &erase_iterators< ft::map<int, int> >, &erase_iterators< std::map<int, int> >);
+	run_case("swap", &swap< ft::map<int, int> >, &swap< std::map<int, int> >);
+	run_case("clear", &clear< ft::map<int, int> >, &clear< std::map<int, int> >);
+	run_case("key_comp", &key_comp< ft::map<int, int> >, &key_comp< std::map<int, int> >);
+	run_case("value_comp", &value_comp< ft::map<int, int> >, &value_comp< std::map<int, int> >);
 }

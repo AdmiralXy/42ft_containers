@@ -225,7 +225,7 @@ namespace ft
 				Node<value_type>* B = A;
 				while (A != 0)
 				{
-					if (A->value.first == value.first) {
+					if (!_comp(value.first, A->value.first) && !_comp(A->value.first, value.first)) {
 						set_rend(_root);
 						set_end(_root);
 						return ft::make_pair(A, false);
@@ -340,6 +340,15 @@ namespace ft
 			}
 		}
 
+		void clear()
+		{
+			_end->parent->right_child = 0;
+			_rend->parent->left_child = 0;
+			clear(_root);
+			_size = 0;
+			_root = 0;
+		}
+
 		int size() const
 		{
 			return _size;
@@ -368,6 +377,16 @@ namespace ft
 		T base()
 		{
 			return _root;
+		}
+
+		void swap(Tree& x)
+		{
+			std::swap(_root, x._root);
+			std::swap(_rend, x._rend);
+			std::swap(_end, x._end);
+			std::swap(_size, x._size);
+			std::swap(_alloc, x._alloc);
+			std::swap(_comp, x._comp);
 		}
 	private:
 		void clear(Node<value_type> *node)

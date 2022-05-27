@@ -1,5 +1,6 @@
 cmake-*
 *.o
+*.o.tmp
 CMakeLists.txt
 a.out
 ctests
