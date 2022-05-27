@@ -43,7 +43,7 @@ void run_case(std::string case_name, ft::map<int, int> (*cf1)(), std::map<int, i
 class TemplateMap
 {
 public:
-	static std::map<int, int> getSmall()
+	static std::map<int, int> getSmallMap()
 	{
 		std::srand(SEED);
 		std::map<int, int> map;
@@ -52,7 +52,7 @@ public:
 		return map;
 	}
 
-	static std::map<int, int> getMedium()
+	static std::map<int, int> getMediumMap()
 	{
 		std::srand(SEED);
 		std::map<int, int> map;
@@ -61,7 +61,7 @@ public:
 		return map;
 	}
 
-	static std::map<int, int> getLarge()
+	static std::map<int, int> getLargeMap()
 	{
 		std::srand(SEED);
 		std::map<int, int> map;
@@ -69,11 +69,22 @@ public:
 			map.insert(std::make_pair(std::rand(), std::rand()));
 		return map;
 	}
+
+	static std::vector<std::pair<int, int> > getLargeVector()
+	{
+		std::srand(SEED);
+		std::vector<std::pair<int, int> > vector;
+		for (int i = 0; i < 5000; ++i)
+			vector.insert(vector.end(), std::make_pair(std::rand(), std::rand()));
+		return vector;
+	}
 };
 
-std::map<int, int> small = TemplateMap::getSmall();
-std::map<int, int> medium = TemplateMap::getMedium();
-std::map<int, int> large = TemplateMap::getLarge();
+std::map<int, int> smallMap = TemplateMap::getSmallMap();
+std::map<int, int> mediumMap = TemplateMap::getMediumMap();
+std::map<int, int> largeMap = TemplateMap::getLargeMap();
+
+std::vector<std::pair<int, int> > largeVector = TemplateMap::getLargeVector();
 
 // Tests
 
@@ -88,7 +99,7 @@ template<typename T>
 T constructor_iterators()
 {
 	std::srand(SEED);
-	T map(medium.begin(), medium.end());
+	T map(mediumMap.begin(), mediumMap.end());
 	return map;
 }
 
@@ -96,7 +107,7 @@ template<typename T>
 T constructor_copy()
 {
 	std::srand(SEED);
-	T map_tmp(medium.begin(), medium.end());
+	T map_tmp(mediumMap.begin(), mediumMap.end());
 	T map(map_tmp);
 	return map;
 }
@@ -105,7 +116,7 @@ template<typename T>
 T operator_assign()
 {
 	std::srand(SEED);
-	T map_tmp(medium.begin(), medium.end());
+	T map_tmp(mediumMap.begin(), mediumMap.end());
 	T map;
 	map = map_tmp;
 	return map;
@@ -114,7 +125,7 @@ T operator_assign()
 template<typename T>
 T begin()
 {
-	T map_tmp(medium.begin(), medium.end());
+	T map_tmp(mediumMap.begin(), mediumMap.end());
 	T map;
 	map.insert(*(map_tmp.begin()));
 	map.insert(*(++map_tmp.begin()));
@@ -125,7 +136,7 @@ T begin()
 template<typename T>
 T end()
 {
-	T map_tmp(medium.begin(), medium.end());
+	T map_tmp(mediumMap.begin(), mediumMap.end());
 	T map;
 	map.insert(*(--map_tmp.end()));
 	map.insert(*(--(--map_tmp.end())));
@@ -136,7 +147,7 @@ T end()
 template<typename T>
 T rbegin()
 {
-	T map_tmp(medium.begin(), medium.end());
+	T map_tmp(mediumMap.begin(), mediumMap.end());
 	T map;
 	map.insert(*(map_tmp.rbegin()));
 	map.insert(*(++map_tmp.rbegin()));
@@ -147,7 +158,7 @@ T rbegin()
 template<typename T>
 T rend()
 {
-	T map_tmp(medium.begin(), medium.end());
+	T map_tmp(mediumMap.begin(), mediumMap.end());
 	T map;
 	map.insert(*(--map_tmp.rend()));
 	map.insert(*(--(--map_tmp.rend())));
@@ -191,20 +202,17 @@ T insert_pos_val()
 template<typename T>
 T insert_iterators()
 {
-//	std::srand(SEED);
-//	std::vector<std::pair<const int, int> > vector;
-//	for (int i = 0; i < N; ++i)
-//		vector.insert(vector.end(), std::make_pair(std::rand(), std::rand()));
-//	T map;
-//	map.insert(vector.begin(), vector.end());
-//	return map;
+	std::srand(SEED);
+	T map;
+	map.insert(largeVector.begin(), largeVector.end());
+	return map;
 }
 
 template<typename T>
 T erase_position()
 {
 	// TODO add test
-	T map(medium.begin(), medium.end());
+	T map(mediumMap.begin(), mediumMap.end());
 	return map;
 }
 
@@ -212,7 +220,7 @@ template<typename T>
 T erase_key()
 {
 	// TODO add test
-	T map(medium.begin(), medium.end());
+	T map(mediumMap.begin(), mediumMap.end());
 	return map;
 }
 
@@ -220,15 +228,15 @@ template<typename T>
 T erase_iterators()
 {
 	// TODO add test
-	T map(medium.begin(), medium.end());
+	T map(mediumMap.begin(), mediumMap.end());
 	return map;
 }
 
 template<typename T>
 T swap()
 {
-	T map_tmp(medium.begin(), medium.end());
-	T map(small.begin(), small.end());
+	T map_tmp(mediumMap.begin(), mediumMap.end());
+	T map(smallMap.begin(), smallMap.end());
 	map.swap(map_tmp);
 	return map;
 }
@@ -236,7 +244,7 @@ T swap()
 template<typename T>
 T clear()
 {
-	T map(medium.begin(), medium.end());
+	T map(mediumMap.begin(), mediumMap.end());
 	map.clear();
 	return map;
 }
@@ -245,7 +253,7 @@ template<typename T>
 T key_comp()
 {
 	// TODO add test
-	T map(medium.begin(), medium.end());
+	T map(mediumMap.begin(), mediumMap.end());
 	map.clear();
 	return map;
 }
@@ -254,7 +262,7 @@ template<typename T>
 T value_comp()
 {
 	// TODO add test
-	T map(medium.begin(), medium.end());
+	T map(mediumMap.begin(), mediumMap.end());
 	map.clear();
 	return map;
 }
@@ -270,7 +278,7 @@ void map()
 	run_case("end", &end< ft::map<int, int> >, &end< std::map<int, int> >);
 	run_case("rbegin", &rbegin< ft::map<int, int> >, &rbegin< std::map<int, int> >);
 	run_case("rend", &rend< ft::map<int, int> >, &rend< std::map<int, int> >);
-//	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
+	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
 //	run_case("insert(val)", &insert_val< ft::map<int, int> >, &insert_val< std::map<int, int> >);
 //	run_case("insert(position, val)", &insert_pos_val< ft::map<int, int> >, &insert_pos_val< std::map<int, int> >);
 //	run_case("insert(iterators)", &insert_iterators< ft::map<int, int> >, &insert_iterators< std::map<int, int> >);
