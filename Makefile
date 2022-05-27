@@ -15,7 +15,6 @@ OBJS_BENCHMARK = $(SRCS_BENCHMARK:%.cpp=%.o)
 INCLUDES = src/iterator/iterator_traits.hpp \
 		src/iterator/normal_iterator.hpp \
 		src/iterator/reverse_iterator.hpp \
-		src/iterator/tree_iterator.hpp \
 		src/utility/enable_if.hpp \
 		src/utility/equal.hpp \
 		src/utility/is_integral.hpp \
