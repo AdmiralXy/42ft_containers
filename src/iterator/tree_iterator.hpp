@@ -1,9 +1,0 @@
-#ifndef INC_42FT_CONTAINERS_TREE_ITERATOR_H
-#define INC_42FT_CONTAINERS_TREE_ITERATOR_H
-
-namespace ft
-{
-
-}
-
-#endif
