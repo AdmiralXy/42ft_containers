@@ -282,7 +282,6 @@ T find()
 	std_map.insert(std::make_pair(3, 3));
 	std_map.insert(std::make_pair(4, 4));
 	std_map.insert(std::make_pair(5, 5));
-
 	T map_tmp(std_map.begin(), std_map.end());
 	T map;
 	map.insert(std::make_pair((*map_tmp.find(5)).first, 1));
@@ -291,6 +290,24 @@ T find()
 	map.insert(std::make_pair((*--map_tmp.find(84)).first, 4));
 	map.insert(std::make_pair((*map_tmp.find(1)).first, 5));
 	std::cout << map.size() << std::endl;
+	return map;
+}
+
+template<typename T>
+T count()
+{
+	T map;
+	std::map<char,int> std_map;
+	std_map['a'] = 101;
+	std_map['c'] = 202;
+	std_map['f'] = 303;
+	for (char c = 'a'; c < 'h'; c++)
+	{
+		if (std_map.count(c) > 0)
+			map.insert(std::make_pair(1, 0));
+		else
+			map.insert(std::make_pair(0, 1));
+	}
 	return map;
 }
 
@@ -317,4 +334,5 @@ void map()
 //	run_case("key_comp", &key_comp< ft::map<int, int> >, &key_comp< std::map<int, int> >);
 //	run_case("value_comp", &value_comp< ft::map<int, int> >, &value_comp< std::map<int, int> >);
 	run_case("find", &find< ft::map<int, int> >, &find< std::map<int, int> >);
+	run_case("count", &count< ft::map<int, int> >, &count< std::map<int, int> >);
 }
