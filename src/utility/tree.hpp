@@ -158,6 +158,7 @@ namespace ft
 	class Tree
 	{
 	public:
+		typedef Key															key_type;
 		typedef ft::pair<const Key, T>										value_type;
 		typedef typename Alloc::template rebind<Node<value_type> >::other	allocator_type;
 		typedef Compare														key_compare;
@@ -252,24 +253,25 @@ namespace ft
 			return ft::make_pair(iterator(inserted), true);
 		}
 
-		bool find(const value_type &value)
+		ft::pair<iterator, bool> find(const key_type &value) const
 		{
 			if (_root == 0)
-				return false;
+				return ft::make_pair(iterator(_end), false);
 			else
 			{
 				Node<value_type>* A = _root;
 				while (A != 0)
 				{
-					if (A->value == value)
-						return true;
-					else if (_comp(value.first, A->value.first))
+					if (!_comp(value, A->value.first) && !_comp(A->value.first, value)) {
+						return ft::make_pair(A, true);
+					}
+					if (_comp(value, A->value.first))
 						A = A->left_child;
 					else
 						A = A->right_child;
 				}
 			}
-			return false;
+			return ft::make_pair(iterator(_end), false);
 		}
 
 		void remove(const value_type &value)

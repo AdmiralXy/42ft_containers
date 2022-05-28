@@ -167,9 +167,21 @@ namespace ft
 
 		// Operations
 
-		//iterator find(const key_type& k);
-		//const_iterator find(const key_type& k) const;
-		//size_type count(const key_type& k) const;
+//		iterator find(const key_type& k)
+//		{
+//			return _tree.find(k).first;
+//		}
+
+		const_iterator find(const key_type& k) const
+		{
+			return _tree.find(k).first;
+		}
+
+		size_type count(const key_type& k) const
+		{
+			return find(k) == iterator(end) ? 0 : 1;
+		}
+
 		//iterator lower_bound(const key_type& k);
 		//const_iterator lower_bound(const key_type& k) const;
 		//iterator upper_bound(const key_type& k);
