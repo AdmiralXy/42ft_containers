@@ -342,6 +342,28 @@ namespace ft
 			}
 		}
 
+		iterator lower_bound(const key_type& k)
+		{
+			for (iterator it = begin(); it != end(); ++it)
+			{
+				if (_comp(k, it->first) || (!_comp(k, it->first) && !_comp(it->first, k)))
+					return it;
+			}
+			return end();
+		}
+
+		iterator upper_bound(const key_type& k)
+		{
+			for (iterator it = begin(); it != end(); ++it)
+			{
+				if (!_comp(k, it->first) && !_comp(it->first, k))
+					return ++it;
+				if (_comp(k, it->first))
+					return it;
+			}
+			return end();
+		}
+
 		void clear()
 		{
 			_end->parent->right_child = 0;

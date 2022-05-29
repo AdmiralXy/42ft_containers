@@ -92,6 +92,7 @@ namespace ft
 
         // Capacity
 
+		// TODO add tests
         bool empty() const
 		{
 			return !_tree.size();
@@ -109,6 +110,7 @@ namespace ft
 
         // Element access
 
+		// TODO mb at()
         mapped_type& operator[](const key_type& k)
 		{
 			return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
@@ -167,10 +169,10 @@ namespace ft
 
 		// Operations
 
-//		iterator find(const key_type& k)
-//		{
-//			return _tree.find(k).first;
-//		}
+		iterator find(const key_type& k)
+		{
+			return _tree.find(k).first;
+		}
 
 		const_iterator find(const key_type& k) const
 		{
@@ -182,10 +184,26 @@ namespace ft
 			return find(k) == iterator(end) ? 0 : 1;
 		}
 
-		//iterator lower_bound(const key_type& k);
-		//const_iterator lower_bound(const key_type& k) const;
-		//iterator upper_bound(const key_type& k);
-		//const_iterator upper_bound(const key_type& k) const;
+		iterator lower_bound(const key_type& k)
+		{
+			return _tree.lower_bound(k);
+		}
+
+		const_iterator lower_bound(const key_type& k) const
+		{
+			return _tree.lower_bound(k);
+		}
+
+		iterator upper_bound(const key_type& k)
+		{
+			return _tree.upper_bound(k);
+		}
+
+		const_iterator upper_bound(const key_type& k) const
+		{
+			return _tree.upper_bound(k);
+		}
+
 		//ft::pair<const_iterator, const_iterator> equal_range(const key_type& k) const;
 		//ft::pair<iterator, iterator>             equal_range(const key_type& k);
 

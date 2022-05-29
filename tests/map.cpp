@@ -289,7 +289,6 @@ T find()
 	map.insert(std::make_pair((*--map_tmp.find(36)).first, 3));
 	map.insert(std::make_pair((*--map_tmp.find(84)).first, 4));
 	map.insert(std::make_pair((*map_tmp.find(1)).first, 5));
-	std::cout << map.size() << std::endl;
 	return map;
 }
 
@@ -308,6 +307,30 @@ T count()
 		else
 			map.insert(std::make_pair(0, 1));
 	}
+	return map;
+}
+
+template<typename T>
+T lower_bound()
+{
+	std::srand(SEED);
+	T map_tmp(mediumMap.begin(), mediumMap.end());
+	std::map<int, int> std_map;
+	std_map.insert(std::make_pair((*map_tmp.lower_bound(mediumMap.begin()->first)).first, std::rand()));
+	std_map.insert(std::make_pair((*--map_tmp.lower_bound((--(mediumMap.end()))->first + 100)).first, std::rand()));
+	T map(std_map.begin(), std_map.end());
+	return map;
+}
+
+template<typename T>
+T upper_bound()
+{
+	std::srand(SEED);
+	T map_tmp(mediumMap.begin(), mediumMap.end());
+	std::map<int, int> std_map;
+	std_map.insert(std::make_pair((*map_tmp.upper_bound(mediumMap.begin()->first)).first, std::rand()));
+	std_map.insert(std::make_pair((*--map_tmp.upper_bound((--(mediumMap.end()))->first + 100)).first, std::rand()));
+	T map(std_map.begin(), std_map.end());
 	return map;
 }
 
@@ -335,4 +358,6 @@ void map()
 //	run_case("value_comp", &value_comp< ft::map<int, int> >, &value_comp< std::map<int, int> >);
 	run_case("find", &find< ft::map<int, int> >, &find< std::map<int, int> >);
 	run_case("count", &count< ft::map<int, int> >, &count< std::map<int, int> >);
+	run_case("lower_bound", &lower_bound< ft::map<int, int> >, &lower_bound< std::map<int, int> >);
+	run_case("upper_bound", &upper_bound< ft::map<int, int> >, &upper_bound< std::map<int, int> >);
 }

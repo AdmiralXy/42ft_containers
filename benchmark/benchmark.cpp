@@ -26,9 +26,9 @@ int main()
 {
 	ft::map<int, int> map;
 
-	map.insert(ft::make_pair(2, 5));
+	map.insert(std::make_pair(2, 1));
+	map.insert(std::make_pair(7, 2));
+	map.insert(std::make_pair(1, 3));
 
-	map.value_comp()(ft::make_pair(2, 5), ft::make_pair(2, 5));
-map.find().
-	std::cout << map.size() << std::endl;
+	std::cout << map.upper_bound(-117)->first << std::endl;
 }
