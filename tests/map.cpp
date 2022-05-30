@@ -115,7 +115,7 @@ template<typename T>
 T operator_assign()
 {
 	std::srand(SEED);
-	T map_tmp(mediumMap.begin(), mediumMap.end());
+	T map_tmp(largeVector.begin(), largeVector.end());
 	T map;
 	map = map_tmp;
 	return map;
@@ -162,6 +162,29 @@ T rend()
 	map.insert(*(--map_tmp.rend()));
 	map.insert(*(--(--map_tmp.rend())));
 	map.insert(*(--map.rend()));
+	return map;
+}
+
+template<typename T>
+T at()
+{
+	T map;
+	try
+	{
+		map.at(0) = 37;
+	}
+	catch (...)
+	{
+		map.insert(std::make_pair(33, 33));
+	}
+	try
+	{
+		map.at(33) = 57;
+	}
+	catch (...)
+	{
+		map.insert(std::make_pair(0, 0));
+	}
 	return map;
 }
 
@@ -374,6 +397,7 @@ void map()
 	run_case("end", &end< ft::map<int, int> >, &end< std::map<int, int> >);
 	run_case("rbegin", &rbegin< ft::map<int, int> >, &rbegin< std::map<int, int> >);
 	run_case("rend", &rend< ft::map<int, int> >, &rend< std::map<int, int> >);
+	run_case("at", &at< ft::map<int, int> >, &at< std::map<int, int> >);
 	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
 	run_case("insert(val)", &insert_val< ft::map<int, int> >, &insert_val< std::map<int, int> >);
 	run_case("insert(position, val)", &insert_pos_val< ft::map<int, int> >, &insert_pos_val< std::map<int, int> >);

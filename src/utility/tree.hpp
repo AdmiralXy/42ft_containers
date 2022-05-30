@@ -74,10 +74,6 @@ namespace ft
 	static Node<T>*
 	tree_decrement(Node<T>* node)
 	{
-		// TODO check
-//		if (//node->_M_color == _S_red &&
-//		node->parent->parent == node)
-//			node = node->right_child;
 		if (node->left_child != 0)
 		{
 			Node<T>* tmp = node->left_child;

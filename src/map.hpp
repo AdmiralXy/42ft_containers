@@ -110,7 +110,18 @@ namespace ft
 
         // Element access
 
-		// TODO mb at()
+		mapped_type& at(const key_type& k)
+		{
+			iterator pair = find(k);
+			return pair == end() ? throw std::out_of_range("out of bounds exception") : pair->second;
+		}
+
+		const mapped_type& at(const key_type& k) const
+		{
+			iterator pair = find(k);
+			return pair == end() ? throw std::out_of_range("out of bounds exception") : pair->second;
+		}
+
         mapped_type& operator[](const key_type& k)
 		{
 			return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second;
