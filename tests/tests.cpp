@@ -15,9 +15,9 @@ int main(int argc, char *argv[])
 		std::cout << "error: bad argument" << std::endl;
 		return 1;
 	}
-	//vector();
+	vector();
 	std::cout << std::endl;
-	//stack();
+	stack();
 	std::cout << std::endl;
 	map();
 	std::cout << std::endl;

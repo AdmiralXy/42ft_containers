@@ -334,30 +334,61 @@ T upper_bound()
 	return map;
 }
 
+template<typename T>
+T equal_range()
+{
+	std::srand(SEED);
+	T map_tmp(mediumMap.begin(), mediumMap.end());
+	std::map<int, int> std_map;
+	ft::pair<typename T::iterator, typename T::iterator> equal_range = map_tmp.equal_range((++(++mediumMap.begin()))->first);
+	typename T::iterator lower_bound = equal_range.first;
+	typename T::iterator upper_bound = equal_range.second;
+	std_map.insert(std::make_pair(upper_bound->first, std::rand()));
+	std_map.insert(std::make_pair((++upper_bound)->first, std::rand()));
+	std_map.insert(std::make_pair(lower_bound->first, std::rand()));
+	std_map.insert(std::make_pair((++lower_bound)->first, std::rand()));
+	(void)lower_bound;
+	T map(std_map.begin(), std_map.end());
+	return map;
+}
+
+template<typename T>
+T get_allocator()
+{
+	T map;
+	typename T::pointer ptr = map.get_allocator().allocate(5);
+	if (ptr)
+		map.insert(std::make_pair(5, 5));
+	map.get_allocator().deallocate(ptr, 5);
+	return map;
+}
+
 void map()
 {
 	print_title("Map");
-//	run_case("Constructor", &default_constructor< ft::map<int, int> >, &default_constructor< std::map<int, int> >);
-//	run_case("Constructor(iterators)", &constructor_iterators< ft::map<int, int> >, &constructor_iterators< std::map<int, int> >);
-//	run_case("Copy constructor", &constructor_copy< ft::map<int, int> >, &constructor_copy< std::map<int, int> >);
-//	run_case("operator=", &operator_assign< ft::map<int, int> >, &operator_assign< std::map<int, int> >);
-//	run_case("begin", &begin< ft::map<int, int> >, &begin< std::map<int, int> >);
-//	run_case("end", &end< ft::map<int, int> >, &end< std::map<int, int> >);
-//	run_case("rbegin", &rbegin< ft::map<int, int> >, &rbegin< std::map<int, int> >);
-//	run_case("rend", &rend< ft::map<int, int> >, &rend< std::map<int, int> >);
-//	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
-//	run_case("insert(val)", &insert_val< ft::map<int, int> >, &insert_val< std::map<int, int> >);
-//	run_case("insert(position, val)", &insert_pos_val< ft::map<int, int> >, &insert_pos_val< std::map<int, int> >);
-//	run_case("insert(iterators)", &insert_iterators< ft::map<int, int> >, &insert_iterators< std::map<int, int> >);
-//	run_case("erase(position)", &erase_position< ft::map<int, int> >, &erase_position< std::map<int, int> >);
-//	run_case("erase(key)", &erase_key< ft::map<int, int> >, &erase_key< std::map<int, int> >);
-//	run_case("erase(iterators)", &erase_iterators< ft::map<int, int> >, &erase_iterators< std::map<int, int> >);
-//	run_case("swap", &swap< ft::map<int, int> >, &swap< std::map<int, int> >);
-//	run_case("clear", &clear< ft::map<int, int> >, &clear< std::map<int, int> >);
-//	run_case("key_comp", &key_comp< ft::map<int, int> >, &key_comp< std::map<int, int> >);
-//	run_case("value_comp", &value_comp< ft::map<int, int> >, &value_comp< std::map<int, int> >);
+	run_case("Constructor", &default_constructor< ft::map<int, int> >, &default_constructor< std::map<int, int> >);
+	run_case("Constructor(iterators)", &constructor_iterators< ft::map<int, int> >, &constructor_iterators< std::map<int, int> >);
+	run_case("Copy constructor", &constructor_copy< ft::map<int, int> >, &constructor_copy< std::map<int, int> >);
+	run_case("operator=", &operator_assign< ft::map<int, int> >, &operator_assign< std::map<int, int> >);
+	run_case("begin", &begin< ft::map<int, int> >, &begin< std::map<int, int> >);
+	run_case("end", &end< ft::map<int, int> >, &end< std::map<int, int> >);
+	run_case("rbegin", &rbegin< ft::map<int, int> >, &rbegin< std::map<int, int> >);
+	run_case("rend", &rend< ft::map<int, int> >, &rend< std::map<int, int> >);
+	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
+	run_case("insert(val)", &insert_val< ft::map<int, int> >, &insert_val< std::map<int, int> >);
+	run_case("insert(position, val)", &insert_pos_val< ft::map<int, int> >, &insert_pos_val< std::map<int, int> >);
+	run_case("insert(iterators)", &insert_iterators< ft::map<int, int> >, &insert_iterators< std::map<int, int> >);
+	run_case("erase(position)", &erase_position< ft::map<int, int> >, &erase_position< std::map<int, int> >);
+	run_case("erase(key)", &erase_key< ft::map<int, int> >, &erase_key< std::map<int, int> >);
+	run_case("erase(iterators)", &erase_iterators< ft::map<int, int> >, &erase_iterators< std::map<int, int> >);
+	run_case("swap", &swap< ft::map<int, int> >, &swap< std::map<int, int> >);
+	run_case("clear", &clear< ft::map<int, int> >, &clear< std::map<int, int> >);
+	run_case("key_comp", &key_comp< ft::map<int, int> >, &key_comp< std::map<int, int> >);
+	run_case("value_comp", &value_comp< ft::map<int, int> >, &value_comp< std::map<int, int> >);
 	run_case("find", &find< ft::map<int, int> >, &find< std::map<int, int> >);
 	run_case("count", &count< ft::map<int, int> >, &count< std::map<int, int> >);
 	run_case("lower_bound", &lower_bound< ft::map<int, int> >, &lower_bound< std::map<int, int> >);
 	run_case("upper_bound", &upper_bound< ft::map<int, int> >, &upper_bound< std::map<int, int> >);
+	run_case("equal_range", &equal_range< ft::map<int, int> >, &equal_range< std::map<int, int> >);
+	run_case("get_allocator", &get_allocator< ft::map<int, int> >, &get_allocator< std::map<int, int> >);
 }
