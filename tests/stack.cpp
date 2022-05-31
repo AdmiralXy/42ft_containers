@@ -44,6 +44,31 @@ T default_constructor()
 }
 
 template<typename T>
+T copy_constructor()
+{
+	T stack_tmp;
+	stack_tmp.push(1);
+	stack_tmp.push(5);
+	stack_tmp.push(3);
+	stack_tmp.push(7);
+	const T& stack(stack_tmp);
+	return stack;
+}
+
+template<typename T>
+T operator_assign()
+{
+	T stack_tmp;
+	stack_tmp.push(1);
+	stack_tmp.push(5);
+	stack_tmp.push(3);
+	stack_tmp.push(7);
+	T stack;
+	stack = stack_tmp;
+	return stack;
+}
+
+template<typename T>
 T empty()
 {
 	std::stack<int> s;
@@ -157,6 +182,8 @@ void stack()
 {
 	print_title("Stack");
 	run_case("Constructor(default)", &default_constructor< ft::stack<int> >, &default_constructor< std::stack<int> >);
+	run_case("Copy constructor", &copy_constructor< ft::stack<int> >, &copy_constructor< std::stack<int> >);
+	run_case("operator=", &operator_assign< ft::stack<int> >, &operator_assign< std::stack<int> >);
 	run_case("empty", &empty< ft::stack<int> >, &empty< std::stack<int> >);
 	run_case("size", &size< ft::stack<int> >, &size< std::stack<int> >);
 	run_case("top", &top< ft::stack<int> >, &top< std::stack<int> >);
