@@ -231,7 +231,47 @@ namespace ft
 		{
 			return _alloc;
 		}
+
+		// Relational operators
+
+		friend bool operator==(const map& lhs, const map& rhs)
+		{
+			return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		}
+
+		friend bool operator!=(const map& lhs, const map& rhs)
+		{
+			return !(lhs == rhs);
+		}
+
+		friend bool operator<(const map& lhs, const map& rhs)
+		{
+			return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		}
+
+		friend bool operator<=(const map& lhs, const map& rhs)
+		{
+			return !(rhs < lhs);
+		}
+
+		friend bool operator>(const map& lhs, const map& rhs)
+		{
+			return rhs < lhs;
+		}
+
+		friend bool operator>=(const map& lhs, const map& rhs)
+		{
+			return !(lhs < rhs);
+		}
     };
+
+	// Swap
+
+	template<typename Key, typename T, typename Compare, typename Alloc>
+	inline void swap(map<Key, T, Compare, Alloc>& x, map<Key, T, Compare, Alloc>& y)
+	{
+		x.swap(y);
+	}
 }
 
 #endif

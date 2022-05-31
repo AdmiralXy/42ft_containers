@@ -28,7 +28,15 @@ int main()
 
 	map.insert(std::make_pair(2, 1));
 	map.insert(std::make_pair(7, 2));
-	map.insert(std::make_pair(1, 3));
+	map.insert(std::make_pair(-1, 3));
 
-	std::cout << map.upper_bound(-117)->first << std::endl;
+	ft::map<int, int> map2;
+
+	map2.insert(std::make_pair(54, 1));
+	map2.insert(std::make_pair(71231, 2));
+	map2.insert(std::make_pair(-6611, 3));
+
+	ft::swap(map, map2);
+
+	std::cout << map.begin()->first << std::endl;
 }
