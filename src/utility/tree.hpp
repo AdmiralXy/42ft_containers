@@ -188,8 +188,11 @@ namespace ft
 			clear(_root);
 			_alloc = x._alloc;
 			_comp = x._comp;
-			for (iterator it = x.begin(); it != x.end(); ++it)
-				add(*it);
+			x._end->parent->right_child = 0;
+			x._rend->parent->left_child = 0;
+			fill(x._root);
+			x.set_rend(x._root);
+			x.set_end(x._root);
 			return *this;
 		}
 
@@ -409,6 +412,15 @@ namespace ft
 			std::swap(_comp, x._comp);
 		}
 	private:
+		void fill(Node<value_type> *node)
+		{
+			if (node) {
+				add(node->value);
+				fill(node->left_child);
+				fill(node->right_child);
+			}
+		}
+
 		void clear(Node<value_type> *node)
 		{
 			if (node) {
@@ -419,7 +431,7 @@ namespace ft
 			}
 		}
 
-		void set_end(Node<value_type> *node)
+		void set_end(Node<value_type> *node) const
 		{
 			Node<value_type>* tmp = node;
 			while (tmp->right_child)
@@ -428,7 +440,7 @@ namespace ft
 			_end->parent = tmp;
 		}
 
-		void set_rend(Node<value_type> *node)
+		void set_rend(Node<value_type> *node) const
 		{
 			Node<value_type>* tmp = node;
 			while (tmp->left_child)
