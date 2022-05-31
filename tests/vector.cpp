@@ -432,8 +432,7 @@ T swap_non_member()
 {
 	T vector_tmp(50, 7);
 	T vector(10, 3);
-	vector.swap(vector);
-	vector.swap(vector_tmp);
+	std::swap(vector, vector_tmp);
 	return vector;
 }
 
