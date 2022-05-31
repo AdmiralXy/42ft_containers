@@ -48,6 +48,14 @@ private:
 	std::map<int, int> *largeMap;
 	std::vector<std::pair<int, int> > *largeVector;
 public:
+	~Random()
+	{
+		delete smallMap;
+		delete mediumMap;
+		delete largeMap;
+		delete largeVector;
+	}
+
 	std::map<int, int> *getSmallMap()
 	{
 		if (smallMap)
@@ -131,7 +139,7 @@ T operator_assign()
 template<typename T>
 T begin()
 {
-	T map_tmp(randomData.getMediumMap()->begin(), randomData.getMediumMap()->end());
+	T map_tmp(randomData.getSmallMap()->begin(), randomData.getSmallMap()->end());
 	T map;
 	map.insert(*(map_tmp.begin()));
 	map.insert(*(++map_tmp.begin()));
@@ -142,7 +150,7 @@ T begin()
 template<typename T>
 T end()
 {
-	T map_tmp(randomData.getMediumMap()->begin(), randomData.getMediumMap()->end());
+	T map_tmp(randomData.getSmallMap()->begin(), randomData.getSmallMap()->end());
 	T map;
 	map.insert(*(--map_tmp.end()));
 	map.insert(*(--(--map_tmp.end())));
@@ -153,7 +161,7 @@ T end()
 template<typename T>
 T rbegin()
 {
-	T map_tmp(randomData.getMediumMap()->begin(), randomData.getMediumMap()->end());
+	T map_tmp(randomData.getSmallMap()->begin(), randomData.getSmallMap()->end());
 	T map;
 	map.insert(*(map_tmp.rbegin()));
 	map.insert(*(++map_tmp.rbegin()));
@@ -164,7 +172,7 @@ T rbegin()
 template<typename T>
 T rend()
 {
-	T map_tmp(randomData.getMediumMap()->begin(), randomData.getMediumMap()->end());
+	T map_tmp(randomData.getSmallMap()->begin(), randomData.getSmallMap()->end());
 	T map;
 	map.insert(*(--map_tmp.rend()));
 	map.insert(*(--(--map_tmp.rend())));
