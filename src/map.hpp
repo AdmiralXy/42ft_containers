@@ -92,7 +92,6 @@ namespace ft
 
         // Capacity
 
-		// TODO add tests
         bool empty() const
 		{
 			return !_tree.size();

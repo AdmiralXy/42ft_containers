@@ -3,7 +3,7 @@
 
 #include <string>
 
-#define SEED 89433401339
+#define SEED 894334019
 
 extern int N;
 

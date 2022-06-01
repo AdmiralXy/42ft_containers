@@ -181,6 +181,37 @@ T rend()
 }
 
 template<typename T>
+T empty()
+{
+	std::map<int, int> std_map;
+	T tmp_map1(randomData.getSmallMap()->begin(), randomData.getSmallMap()->end());
+	T tmp_map2;
+	std_map.insert(std::make_pair(tmp_map1.empty(), tmp_map2.empty()));
+	T map(std_map.begin(), std_map.end());
+	return map;
+}
+
+template<typename T>
+T size()
+{
+	std::map<int, int> std_map;
+	T tmp_map(randomData.getSmallMap()->begin(), randomData.getSmallMap()->end());
+	std_map.insert(std::make_pair(tmp_map.size(), tmp_map.size()));
+	T map(std_map.begin(), std_map.end());
+	return map;
+}
+
+template<typename T>
+T max_size()
+{
+	std::map<int, int> std_map;
+	T tmp_map(randomData.getSmallMap()->begin(), randomData.getSmallMap()->end());
+	std_map.insert(std::make_pair(tmp_map.max_size() > 0, tmp_map.max_size() > 0));
+	T map(std_map.begin(), std_map.end());
+	return map;
+}
+
+template<typename T>
 T at()
 {
 	T map;
@@ -412,6 +443,9 @@ void map()
 	run_case("end", &end< ft::map<int, int> >, &end< std::map<int, int> >);
 	run_case("rbegin", &rbegin< ft::map<int, int> >, &rbegin< std::map<int, int> >);
 	run_case("rend", &rend< ft::map<int, int> >, &rend< std::map<int, int> >);
+	run_case("empty", &empty< ft::map<int, int> >, &empty< std::map<int, int> >);
+	run_case("size", &size< ft::map<int, int> >, &size< std::map<int, int> >);
+	run_case("max_size", &max_size< ft::map<int, int> >, &max_size< std::map<int, int> >);
 	run_case("at", &at< ft::map<int, int> >, &at< std::map<int, int> >);
 	run_case("operator[]", &operator_index< ft::map<int, int> >, &operator_index< std::map<int, int> >);
 	run_case("insert(val)", &insert_val< ft::map<int, int> >, &insert_val< std::map<int, int> >);
