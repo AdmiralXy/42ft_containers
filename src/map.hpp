@@ -55,7 +55,7 @@ namespace ft
 		{
 			while (first != last)
 			{
-				insert(*first);
+				insert(ft::make_pair(first->first, first->second));
 				++first;
 			}
 		}
@@ -145,7 +145,7 @@ namespace ft
 		{
 			while (first != last)
 			{
-				_tree.add(*first);
+				_tree.add(ft::make_pair(first->first, first->second));
 				++first;
 			}
 		}
