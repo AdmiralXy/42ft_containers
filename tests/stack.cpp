@@ -181,7 +181,7 @@ T relational_operators()
 void stack()
 {
 	print_title("Stack");
-	run_case("Constructor(default)", &default_constructor< ft::stack<int> >, &default_constructor< std::stack<int> >);
+	run_case("Constructor", &default_constructor< ft::stack<int> >, &default_constructor< std::stack<int> >);
 	run_case("Copy constructor", &copy_constructor< ft::stack<int> >, &copy_constructor< std::stack<int> >);
 	run_case("operator=", &operator_assign< ft::stack<int> >, &operator_assign< std::stack<int> >);
 	run_case("empty", &empty< ft::stack<int> >, &empty< std::stack<int> >);
