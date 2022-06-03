@@ -1,46 +1,123 @@
-#include "../src/map.hpp"
 #include <iostream>
-#include <map>
-#include <ctime>
-#include <cstdlib>
+#include <string>
+#include <deque>
+#ifndef CONTAINER_TYPE
+ #define CONTAINER_TYPE 1
+#endif
+#if CONTAINER_TYPE //CREATE A REAL STL EXAMPLE
+ #include <map>
+ #include <stack>
+ #include <vector>
+namespace ft = std;
+#else
+ #include <map.hpp>
+ #include <stack.hpp>
+ #include <vector.hpp>
+#endif
 
-template <typename T>
-void print_map(T map)
-{
-	typename T::iterator iterator = map.begin();
-	for (typename T::size_type i = map.size(); i > 0; --i)
-	{
-		std::cout << iterator->second << " ";
-		iterator++;
-	}
-	std::cout << std::endl;
-}
+#include <stdlib.h>
 
-class User
+#define MAX_RAM 4294967296
+#define BUFFER_SIZE 4096
+struct Buffer
 {
-public:
-	int id;
-	explicit User(int id) : id(id) {}
+	int idx;
+	char buff[BUFFER_SIZE];
 };
 
-// TODO test initialize const_iterator from iterator & const_reverse_iterator from reverse_iterator (map, vector)
-// TODO add test to compare const_iterator and iterators
-// TODO test for same keys (map) (also check NULL)
-// TODO add test STD vector/deque/list compatibility with ft::stack
-// TODO learn value compare
-// TODO add benchmark test (produce two binaries that run the same tests: one with FT containers only, and the other one with the STL containers)
-// TODO move all implementations (except templates) to .cpp files
 
-int main()
+#define COUNT (MAX_RAM / (int)sizeof(Buffer))
+
+template<typename T>
+class MutantStack : public ft::stack<T>
 {
-	ft::map<int, int> tmp;
-	tmp.insert(std::make_pair(1200, 0));
-	ft::map<int, int>::iterator iterator = tmp.begin();
-	tmp.insert(std::make_pair(1300, 0));
-	tmp.insert(std::make_pair(1400, 0));
-	tmp.insert(std::make_pair(50, 0));
+public:
+	MutantStack() {}
+	MutantStack(const MutantStack<T>& src) { *this = src; }
+	MutantStack<T>& operator=(const MutantStack<T>& rhs)
+	{
+		this->c = rhs.c;
+		return *this;
+	}
+	~MutantStack() {}
 
-	for (ft::map<int, int>::iterator iter = iterator; iter != tmp.end(); iter++)
-		std::cout << iter->first << " ";
+	typedef typename ft::stack<T>::container_type::iterator iterator;
+
+	iterator begin() { return this->c.begin(); }
+	iterator end() { return this->c.end(); }
+};
+
+int main(int argc, char** argv) {
+	if (argc != 2)
+	{
+		std::cerr << "Usage: ./test seed" << std::endl;
+		std::cerr << "Provide a seed please" << std::endl;
+		std::cerr << "Count value:" << COUNT << std::endl;
+		return 1;
+	}
+	if (CONTAINER_TYPE == 1)
+		std::cout << "STD" << std::endl;
+	else
+		std::cout << "FT" << std::endl;
+	const int seed = atoi(argv[1]);
+	srand(seed);
+
+	ft::vector<std::string> vector_str;
+	ft::vector<int> vector_int;
+	ft::stack<int> stack_int;
+	ft::vector<Buffer> vector_buffer;
+	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+	ft::map<int, int> map_int;
+
+	for (int i = 0; i < COUNT; i++)
+	{
+		vector_buffer.push_back(Buffer());
+	}
+
+	for (int i = 0; i < COUNT; i++)
+	{
+		const int idx = rand() % COUNT;
+		vector_buffer[idx].idx = 5;
+	}
+	ft::vector<Buffer>().swap(vector_buffer);
+
+	try
+	{
+		for (int i = 0; i < COUNT; i++)
+		{
+			const int idx = rand() % COUNT;
+			vector_buffer.at(idx);
+			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+		}
+	}
+	catch(const std::exception& e)
+	{
+		//NORMAL ! :P
+	}
+
+	for (int i = 0; i < COUNT; ++i)
+	{
+		map_int.insert(ft::make_pair(rand(), rand()));
+	}
+
+	int sum = 0;
+	for (int i = 0; i < 10000; i++)
+	{
+		int access = rand();
+		sum += map_int[access];
+	}
+	std::cout << "should be constant with the same seed: " << sum << std::endl;
+
+	{
+		ft::map<int, int> copy = map_int;
+	}
+	MutantStack<char> iterable_stack;
+	for (char letter = 'a'; letter <= 'z'; letter++)
+		iterable_stack.push(letter);
+	for (MutantStack<char>::iterator it = iterable_stack.begin(); it != iterable_stack.end(); it++)
+	{
+		std::cout << *it;
+	}
 	std::cout << std::endl;
+	return (0);
 }

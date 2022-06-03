@@ -31,8 +31,8 @@ Tested on:
 Run:
 ```
 $> make all
-$> ./main_tests [number_of_entries]
-$> ./main_benchmark
+$> ./ctests [number_of_entries]
+$> ./cbenchmark
 ```
 
 Makefile commands:
