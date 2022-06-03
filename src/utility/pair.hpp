@@ -29,12 +29,6 @@ namespace ft
 			second = other.second;
 			return *this;
 		}
-
-		friend std::ostream& operator<<(std::ostream &os, const pair &pair)
-		{
-			os << "[" << pair.first << ", " << pair.second << "]";
-			return os;
-		}
 	};
 
 	template<class T1, class T2>
