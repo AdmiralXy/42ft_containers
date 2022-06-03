@@ -104,7 +104,7 @@ namespace ft
 
         size_type max_size() const
 		{
-			return _alloc.max_size();
+			return _tree.max_size();
 		}
 
         // Element access

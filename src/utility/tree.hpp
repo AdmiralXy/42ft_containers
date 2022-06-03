@@ -492,6 +492,11 @@ namespace ft
 			std::swap(_alloc, x._alloc);
 			std::swap(_comp, x._comp);
 		}
+
+		size_type max_size() const
+		{
+			return _alloc.max_size();
+		}
 	private:
 		void fill(Node<value_type> *node)
 		{
