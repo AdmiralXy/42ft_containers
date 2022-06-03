@@ -22,33 +22,17 @@ namespace ft
 		typedef typename _traits_type::reference			reference;
 		typedef typename _traits_type::pointer				pointer;
 
-		normal_iterator() : current(Iterator())
-		{
+		normal_iterator() : current(Iterator()) {}
 
-		}
-
-		explicit normal_iterator(const Iterator& _i) : current(_i)
-		{
-
-		}
+		normal_iterator(const Iterator& _i) : current(_i) {}
 
 		// Allow iterator to const_iterator conversion
-		template<typename Iter>
-		explicit normal_iterator(const normal_iterator<Iter, typename ft::enable_if<(std::__are_same<Iter, typename Container::pointer>::__value), Container>::__type>& _i) : current(_i.base())
-		{
-
-		}
+		template <class U, class V> normal_iterator(const normal_iterator<U, V>& other) : current(other.base()) {}
 
 		// Forward iterator requirements
-		reference operator*() const
-		{
-			return *current;
-		}
+		reference operator*() const { return *current; }
 
-		pointer operator->() const
-		{
-			return current;
-		}
+		pointer operator->() const { return current; }
 
 		normal_iterator& operator++()
 		{
