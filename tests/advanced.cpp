@@ -86,6 +86,26 @@ bool equal(ft::stack<T, U> stack1, std::stack<T, U> stack2)
 	return true;
 }
 
+template<typename T>
+bool equal(ft::vector<T> vector1, std::vector<T> vector2)
+{
+	return ft::equal(vector1.begin(), vector1.end(), vector2.begin()) &&
+		   vector1.size() == vector2.size();
+}
+
+void run_case(std::string case_name, ft::vector<std::pair<User*, int> > (*cf1)(), std::vector<std::pair<User*, int> > (*cf2)())
+{
+	time_t ft_start = timestamp();
+	ft::vector<std::pair<User*, int> > v1 = cf1();
+	time_t ft_end = timestamp();
+
+	time_t std_start = timestamp();
+	std::vector<std::pair<User*, int> > v2 = cf2();
+	time_t std_end = timestamp();
+
+	print_result(case_name, equal(v1, v2), ft_end - ft_start, std_end - std_start);
+}
+
 void run_case(std::string case_name, ft::map<User*, int> (*cf1)(), std::map<User*, int> (*cf2)())
 {
 	time_t ft_start = timestamp();
@@ -141,6 +161,23 @@ void run_case(std::string case_name, ft::stack<User*, std::list<User*> > (*cf1)(
 // Tests
 
 template<typename T>
+T const_iterators_init()
+{
+	T container_tmp;
+	container_tmp.insert(container_tmp.begin(), std::make_pair(user1, 0));
+	container_tmp.insert(container_tmp.begin(), std::make_pair(user2, 0));
+	container_tmp.insert(container_tmp.begin(), std::make_pair(user3, 0));
+	container_tmp.insert(container_tmp.begin(), std::make_pair(user4, 0));
+	container_tmp.insert(container_tmp.begin(), std::make_pair(user5, 0));
+	typename T::const_iterator const_iterator = container_tmp.begin();
+	typename T::const_reverse_iterator const_reverse_iterator = container_tmp.rbegin();
+	T container;
+	container.insert(container.begin(), *const_iterator);
+	container.insert(container.begin(), *const_reverse_iterator);
+	return container;
+}
+
+template<typename T>
 T map_iterators_validate()
 {
 	T map_tmp;
@@ -158,6 +195,22 @@ T map_iterators_validate()
 	map_tmp.insert(std::make_pair(user4, 0));
 	map_tmp.insert(std::make_pair(user1, 0));
 	T map(iterator2, map_tmp.end());
+	return map;
+}
+
+template<typename T>
+T map_same_keys()
+{
+	T map;
+	map.insert(std::make_pair(user1, 0));
+	map.insert(std::make_pair(user1, 1));
+	map.insert(std::make_pair(user1, 2));
+	map.insert(std::make_pair(user2, 0));
+	map.insert(std::make_pair(user2, 1));
+	map.insert(std::make_pair(user2, 2));
+	map.insert(std::make_pair(user3, 0));
+	map.insert(std::make_pair(user3, 1));
+	map.insert(std::make_pair(user3, 2));
 	return map;
 }
 
@@ -181,10 +234,13 @@ void advanced()
 	user4 = new User(4);
 	user5 = new User(5);
 	print_title("Advanced tests");
-	run_case("[ Map ] Validate iter-s with insert/erase", &map_iterators_validate< ft::map<User*, int> >, &map_iterators_validate< std::map<User*, int> >);
-	run_case("[Stack] Compatibility with std::vector", &stack_containers_compatibility< ft::stack<User*, std::vector<User*> > >, &stack_containers_compatibility< std::stack<User*, std::vector<User*> > >);
-	run_case("[Stack] Compatibility with std::deque", &stack_containers_compatibility< ft::stack<User*, std::deque<User*> > >, &stack_containers_compatibility< std::stack<User*, std::deque<User*> > >);
-	run_case("[Stack] Compatibility with std::list", &stack_containers_compatibility< ft::stack<User*, std::list<User*> > >, &stack_containers_compatibility< std::stack<User*, std::list<User*> > >);
+	run_case("[Vector] Const iterator initialize", &const_iterators_init< ft::vector<std::pair<User*, int> > >, &const_iterators_init< std::vector<std::pair<User*, int> > >);
+	run_case("[Map   ] Const iterator initialize", &const_iterators_init< ft::map<User*, int> >, &const_iterators_init< std::map<User*, int> >);
+	run_case("[Map   ] Validate iter-s with insert/erase", &map_iterators_validate< ft::map<User*, int> >, &map_iterators_validate< std::map<User*, int> >);
+	run_case("[Map   ] Same keys", &map_same_keys< ft::map<User*, int> >, &map_same_keys< std::map<User*, int> >);
+	run_case("[Stack ] Compatibility with std::vector", &stack_containers_compatibility< ft::stack<User*, std::vector<User*> > >, &stack_containers_compatibility< std::stack<User*, std::vector<User*> > >);
+	run_case("[Stack ] Compatibility with std::deque", &stack_containers_compatibility< ft::stack<User*, std::deque<User*> > >, &stack_containers_compatibility< std::stack<User*, std::deque<User*> > >);
+	run_case("[Stack ] Compatibility with std::list", &stack_containers_compatibility< ft::stack<User*, std::list<User*> > >, &stack_containers_compatibility< std::stack<User*, std::list<User*> > >);
 	delete user1;
 	delete user2;
 	delete user3;
