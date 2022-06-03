@@ -288,8 +288,11 @@ T erase_position()
 template<typename T>
 T erase_key()
 {
-	// TODO add test
 	T map(randomData.getMediumMap()->begin(), randomData.getMediumMap()->end());
+	map.erase(map.begin()->first);
+	map.erase((--map.end())->first);
+	while (map.size())
+		map.erase(map.begin()->first);
 	return map;
 }
 

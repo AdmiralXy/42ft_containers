@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <ctime>
+#include <cstdlib>
 
 template <typename T>
 void print_map(T map)
@@ -22,21 +23,39 @@ public:
 	explicit User(int id) : id(id) {}
 };
 
+// TODO tests for relational operators (map, vector)
+
 int main()
 {
+//	ft::map<int, int> map;
+//
+//	map.insert(ft::make_pair(100, 0));
+//	map.insert(ft::make_pair(50, 0));
+//	map.insert(ft::make_pair(200, 0));
+//	map.insert(ft::make_pair(300, 0));
+//
+//	map.erase(100);
+//
+//	for (ft::map<int, int>::iterator it = map.begin(); it != map.end(); ++it)
+//	{
+//		std::cout << it->first << " ";
+//	}
+//	std::cout << std::endl;
+
 	ft::map<int, int> map;
 
-	map.insert(std::make_pair(2, 1));
-	map.insert(std::make_pair(7, 2));
-	map.insert(std::make_pair(-1, 3));
+	std::srand(std::time(0));
+	for (int i = 0; i < 25; ++i)
+		map.insert(ft::make_pair(std::rand() % 600, 0));
 
-	ft::map<int, int> map2;
+	for (int i = 0; i < 14; ++i)
+	{
+		map.erase(map.begin()->first);
+	}
 
-	map2.insert(std::make_pair(54, 1));
-	map2.insert(std::make_pair(71231, 2));
-	map2.insert(std::make_pair(-6611, 3));
-
-	ft::swap(map, map2);
-
-	std::cout << map.begin()->first << std::endl;
+	for (ft::map<int, int>::iterator it = map.begin(); it != map.end(); ++it)
+	{
+		std::cout << it->first << " ";
+	}
+	std::cout << std::endl;
 }

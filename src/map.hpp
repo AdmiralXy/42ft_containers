@@ -150,7 +150,12 @@ namespace ft
 		}
 
 		//void erase(iterator position);
-		//size_type erase(const key_type& k);
+
+		size_type erase(const key_type& k)
+		{
+			return _tree.erase(k);
+		}
+
 		//void erase(iterator first, iterator last);
 
 		void swap(map& x)
