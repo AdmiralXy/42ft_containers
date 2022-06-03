@@ -20,25 +20,15 @@ namespace ft
 		typedef typename _traits_type::reference			reference;
 		typedef typename _traits_type::pointer				pointer;
 
-		reverse_iterator() : current()
-		{
+		reverse_iterator() : current() { }
 
-		}
+		explicit reverse_iterator(iterator_type _x) : current(_x) { }
 
-		explicit reverse_iterator(iterator_type _x) : current(_x)
-		{
+		template <class U> reverse_iterator(const reverse_iterator<U>& other) : current(other.base()) { }
 
-		}
+		reverse_iterator(const reverse_iterator& _x) : current(_x.current) { }
 
-		reverse_iterator(const reverse_iterator& _x) : current(_x.current)
-		{
-
-		}
-
-		~reverse_iterator()
-		{
-
-		}
+		~reverse_iterator() { }
 
 		reverse_iterator &operator=(const reverse_iterator &obj)
 		{
@@ -46,20 +36,11 @@ namespace ft
 			return *this;
 		}
 
-		iterator_type base() const
-		{
-			return current;
-		}
+		iterator_type base() const { return current; }
 
-		reference operator*()
-		{
-			return *current;
-		}
+		reference operator*() { return *current; }
 
-		pointer operator->()
-		{
-			return &(operator*());
-		}
+		pointer operator->() { return &(operator*()); }
 
 		reverse_iterator &operator++()
 		{
