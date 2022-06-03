@@ -256,7 +256,7 @@ namespace ft
 		ft::pair<iterator, bool> find(const key_type &value) const
 		{
 			if (_root == 0)
-				return ft::make_pair(iterator(_end), false);
+				return ft::make_pair(end(), false);
 			else
 			{
 				Node<value_type>* A = _root;
@@ -271,7 +271,7 @@ namespace ft
 						A = A->right_child;
 				}
 			}
-			return ft::make_pair(iterator(_end), false);
+			return ft::make_pair(end(), false);
 		}
 
 		size_type erase(const key_type &value)

@@ -217,7 +217,7 @@ T at()
 	T map;
 	try
 	{
-		map.at(0) = 37;
+		map.at(0);
 	}
 	catch (...)
 	{
@@ -225,7 +225,7 @@ T at()
 	}
 	try
 	{
-		map.at(33) = 57;
+		map.at(33);
 	}
 	catch (...)
 	{
@@ -280,8 +280,11 @@ T insert_iterators()
 template<typename T>
 T erase_position()
 {
-	// TODO add test
 	T map(randomData.getMediumMap()->begin(), randomData.getMediumMap()->end());
+	map.erase(map.begin());
+	map.erase((--map.end()));
+	while (map.size())
+		map.erase(map.begin());
 	return map;
 }
 
@@ -299,8 +302,8 @@ T erase_key()
 template<typename T>
 T erase_iterators()
 {
-	// TODO add test
 	T map(randomData.getMediumMap()->begin(), randomData.getMediumMap()->end());
+	map.erase(map.begin(), map.end());
 	return map;
 }
 

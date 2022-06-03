@@ -149,14 +149,21 @@ namespace ft
 			}
 		}
 
-		//void erase(iterator position);
+		void erase(iterator position)
+		{
+			_tree.erase(position->first);
+		}
 
 		size_type erase(const key_type& k)
 		{
 			return _tree.erase(k);
 		}
 
-		//void erase(iterator first, iterator last);
+		void erase(iterator first, iterator last)
+		{
+			while (first != last)
+				_tree.erase((first++)->first);
+		}
 
 		void swap(map& x)
 		{

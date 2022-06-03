@@ -42,18 +42,22 @@ int main()
 //	}
 //	std::cout << std::endl;
 
-	ft::map<int, int> map;
+	std::map<int, int> map;
 
-	std::srand(std::time(0));
+	std::srand(11231230);
 	for (int i = 0; i < 25; ++i)
-		map.insert(ft::make_pair(std::rand() % 600, 0));
+		map.insert(std::make_pair(std::rand() % 600, 0));
 
-	for (int i = 0; i < 14; ++i)
+	std::map<int, int>::iterator iter = map.begin();
+
+	while (iter != map.end())
 	{
-		map.erase(map.begin()->first);
+		map.erase(iter++);
 	}
 
-	for (ft::map<int, int>::iterator it = map.begin(); it != map.end(); ++it)
+	//map.erase(map.begin(), map.end());
+
+	for (std::map<int, int>::iterator it = map.begin(); it != map.end(); ++it)
 	{
 		std::cout << it->first << " ";
 	}
