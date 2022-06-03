@@ -4,6 +4,11 @@
 #include <vector>
 #include <map>
 #include "map.hpp"
+#include <vector>
+#include "vector.hpp"
+#include <stack>
+#include "stack.hpp"
+#include <list>
 #include "utilities.hpp"
 
 // Utility
@@ -66,6 +71,21 @@ bool equal(ft::map<User*, T> &map1, std::map<User*, T> &map2)
 	return true;
 }
 
+template <typename T, typename U>
+bool equal(ft::stack<T, U> stack1, std::stack<T, U> stack2)
+{
+	if (stack1.size() != stack2.size())
+		return false;
+	for (typename ft::stack<T>::size_type i = stack1.size(); i > 0; --i)
+	{
+		if (stack1.top() != stack2.top())
+			return false;
+		stack1.pop();
+		stack2.pop();
+	}
+	return true;
+}
+
 void run_case(std::string case_name, ft::map<User*, int> (*cf1)(), std::map<User*, int> (*cf2)())
 {
 	time_t ft_start = timestamp();
@@ -74,6 +94,45 @@ void run_case(std::string case_name, ft::map<User*, int> (*cf1)(), std::map<User
 
 	time_t std_start = timestamp();
 	std::map<User*, int> v2 = cf2();
+	time_t std_end = timestamp();
+
+	print_result(case_name, equal(v1, v2), ft_end - ft_start, std_end - std_start);
+}
+
+void run_case(std::string case_name, ft::stack<User*, std::vector<User*> > (*cf1)(), std::stack<User*, std::vector<User*> > (*cf2)())
+{
+	time_t ft_start = timestamp();
+	ft::stack<User*, std::vector<User*> > v1 = cf1();
+	time_t ft_end = timestamp();
+
+	time_t std_start = timestamp();
+	std::stack<User*, std::vector<User*> > v2 = cf2();
+	time_t std_end = timestamp();
+
+	print_result(case_name, equal(v1, v2), ft_end - ft_start, std_end - std_start);
+}
+
+void run_case(std::string case_name, ft::stack<User*, std::deque<User*> > (*cf1)(), std::stack<User*, std::deque<User*> > (*cf2)())
+{
+	time_t ft_start = timestamp();
+	ft::stack<User*, std::deque<User*> > v1 = cf1();
+	time_t ft_end = timestamp();
+
+	time_t std_start = timestamp();
+	std::stack<User*, std::deque<User*> > v2 = cf2();
+	time_t std_end = timestamp();
+
+	print_result(case_name, equal(v1, v2), ft_end - ft_start, std_end - std_start);
+}
+
+void run_case(std::string case_name, ft::stack<User*, std::list<User*> > (*cf1)(), std::stack<User*, std::list<User*> > (*cf2)())
+{
+	time_t ft_start = timestamp();
+	ft::stack<User*, std::list<User*> > v1 = cf1();
+	time_t ft_end = timestamp();
+
+	time_t std_start = timestamp();
+	std::stack<User*, std::list<User*> > v2 = cf2();
 	time_t std_end = timestamp();
 
 	print_result(case_name, equal(v1, v2), ft_end - ft_start, std_end - std_start);
@@ -102,6 +161,17 @@ T map_iterators_validate()
 	return map;
 }
 
+template<typename T>
+T stack_containers_compatibility()
+{
+	T stack;
+	stack.push(user1);
+	stack.push(user2);
+	stack.push(user3);
+	stack.push(user4);
+	stack.push(user5);
+	return stack;
+}
 
 void advanced()
 {
@@ -111,7 +181,10 @@ void advanced()
 	user4 = new User(4);
 	user5 = new User(5);
 	print_title("Advanced tests");
-	run_case("[Map] Validate iterators with insert/erase", &map_iterators_validate< ft::map<User*, int> >, &map_iterators_validate< std::map<User*, int> >);
+	run_case("[ Map ] Validate iter-s with insert/erase", &map_iterators_validate< ft::map<User*, int> >, &map_iterators_validate< std::map<User*, int> >);
+	run_case("[Stack] Compatibility with std::vector", &stack_containers_compatibility< ft::stack<User*, std::vector<User*> > >, &stack_containers_compatibility< std::stack<User*, std::vector<User*> > >);
+	run_case("[Stack] Compatibility with std::deque", &stack_containers_compatibility< ft::stack<User*, std::deque<User*> > >, &stack_containers_compatibility< std::stack<User*, std::deque<User*> > >);
+	run_case("[Stack] Compatibility with std::list", &stack_containers_compatibility< ft::stack<User*, std::list<User*> > >, &stack_containers_compatibility< std::stack<User*, std::list<User*> > >);
 	delete user1;
 	delete user2;
 	delete user3;
