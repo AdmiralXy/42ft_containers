@@ -34,9 +34,7 @@ namespace ft
 
 		// Allow iterator to const_iterator conversion
 		template<typename Iter>
-		explicit normal_iterator(const normal_iterator<Iter, typename ft::enable_if<
-		        (std::__are_same<Iter, typename Container::pointer>::__value), Container>::__type>& _i)
-				: current(_i.base())
+		explicit normal_iterator(const normal_iterator<Iter, typename ft::enable_if<(std::__are_same<Iter, typename Container::pointer>::__value), Container>::__type>& _i) : current(_i.base())
 		{
 
 		}
