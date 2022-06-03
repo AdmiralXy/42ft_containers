@@ -4,5 +4,6 @@ cmake-*
 CMakeLists.txt
 a.out
 ctests
-cbenchmark
+ft_cbenchmark
+std_cbenchmark
 .idea
