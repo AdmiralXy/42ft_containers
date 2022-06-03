@@ -373,8 +373,11 @@ T swap()
 {
 	T vector_tmp(50, 7);
 	T vector(10, 3);
+	typename T::iterator vector_iter = vector.begin();
 	vector.swap(vector);
 	vector.swap(vector_tmp);
+	vector.push_back(*vector_iter);
+	vector.push_back(*(++vector_iter));
 	return vector;
 }
 
