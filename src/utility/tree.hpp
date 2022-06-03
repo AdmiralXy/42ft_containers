@@ -160,11 +160,12 @@ namespace ft
 		typedef Compare														key_compare;
 		typedef ft::tree_iterator<value_type>								iterator;
 		typedef ft::tree_iterator<value_type>								const_iterator;
+		typedef typename allocator_type::size_type							size_type;
 	private:
 		Node<value_type>*		_root;
 		Node<value_type>*		_rend;
 		Node<value_type>*		_end;
-		int						_size;
+		size_type				_size;
 		allocator_type			_alloc;
 		Compare					_comp;
 	public:
@@ -273,21 +274,21 @@ namespace ft
 			return ft::make_pair(iterator(_end), false);
 		}
 
-		void remove(const value_type &value)
+		size_type erase(const key_type &value)
 		{
 			if (_root != 0) {
-				Node<value_type>* A = _root;
-				Node<value_type>* B = A;
+				_end->parent->right_child = 0;
+				_rend->parent->left_child = 0;
 
-				while (A->value != value)
+				ft::pair<iterator, bool> search = find(value);
+				if (search.second == false)
+					return false;
+
+				Node<value_type>* A = search.first.node;
+				Node<value_type>* B = A->parent ? A->parent : A;
+
+				if (A->left_child == 0 && A->right_child == 0)
 				{
-					B = A;
-					if (_comp(value.first, A->value.first))
-						A = A->left_child;
-					else
-						A = A->right_child;
-				}
-				if (A->left_child == 0 && A->right_child == 0) {
 					if (A == _root)
 						_root = 0;
 					else if (B->left_child == A)
@@ -296,49 +297,63 @@ namespace ft
 						B->right_child = 0;
 					_alloc.destroy(A);
 					_alloc.deallocate(A, 1);
-				} else if (A->left_child && A->right_child) {
-					Node<value_type>* B_parent = B;
-					for (Node<value_type>* tempSearch = A->right_child; tempSearch != 0;)
-					{
-						B_parent = B;
-						B = tempSearch;
-						tempSearch = tempSearch->left_child;
-					}
-					A->value = B->value;
-					if (B->right_child == 0) {
-						if (B_parent->left_child == B)
-							B_parent->left_child = 0;
-						else
-							B_parent->right_child = 0;
+				}
+				else if (A->left_child && A->right_child)
+				{
+					Node<value_type> *min = Node<value_type>::minimum(A->right_child);
+					Node<value_type> *parent = A->parent;
+					Node<value_type> *left_child = A->left_child;
+					Node<value_type> *right_child = A->right_child;
+					_alloc.destroy(A);
+					_alloc.construct(A, Node<value_type>(min->value));
+					A->left_child = left_child;
+					A->right_child = right_child;
+					A->parent = parent;
+					if (min->parent == A) {
+						A->right_child = min->right_child;
+						min->right_child->parent = A->right_child;
 					} else {
-						if (B_parent->left_child == B)
-							B_parent->left_child = B->right_child;
-						else
-							B_parent->right_child = B->right_child;
+						min->parent->left_child = 0;
 					}
-					_alloc.destroy(B);
-					_alloc.deallocate(B, 1);
-				} else {
-					if (A == B) {
-						if (A->left_child == 0)
+					_alloc.destroy(min);
+					_alloc.deallocate(min, 1);
+				}
+				else
+				{
+					if (A == _root)
+					{
+						if (_root->left_child == 0)
 							_root = A->right_child;
 						else
 							_root = A->left_child;
-					} else if (A->left_child == 0) {
+						_root->parent = 0;
+					}
+					else if (A->left_child == 0)
+					{
 						if (B->left_child == A)
 							B->left_child = A->right_child;
 						else
 							B->right_child = A->right_child;
-					} else {
+						A->right_child->parent = A->parent;
+					}
+					else if (A->right_child == 0)
+					{
 						if (B->left_child == A)
 							B->left_child = A->left_child;
 						else
 							B->right_child = A->left_child;
+						A->left_child->parent = A->parent;
 					}
 					_alloc.destroy(A);
 					_alloc.deallocate(A, 1);
 				}
+				if (_root) {
+					set_rend(_root);
+					set_end(_root);
+				}
 			}
+			--_size;
+			return true;
 		}
 
 		iterator lower_bound(const key_type& k)
@@ -372,28 +387,36 @@ namespace ft
 			_root = 0;
 		}
 
-		int size() const
+		size_type size() const
 		{
 			return _size;
 		}
 
 		iterator begin() const
 		{
+			if (!_root)
+				return iterator(0);
 			return iterator(_rend->parent);
 		}
 
 		iterator rbegin() const
 		{
+			if (!_root)
+				return iterator(0);
 			return iterator(_end->parent);
 		}
 
 		iterator end() const
 		{
+			if (!_root)
+				return iterator(0);
 			return iterator(_end);
 		}
 
 		iterator rend() const
 		{
+			if (!_root)
+				return iterator(0);
 			return iterator(_rend);
 		}
 
