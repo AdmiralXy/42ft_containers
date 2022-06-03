@@ -271,7 +271,6 @@ T insert_pos_val()
 template<typename T>
 T insert_iterators()
 {
-	std::srand(SEED);
 	T map;
 	map.insert(randomData.getLargeVector()->begin(), randomData.getLargeVector()->end());
 	return map;
@@ -438,6 +437,43 @@ T get_allocator()
 	return map;
 }
 
+template<typename T>
+T relational_operators()
+{
+	std::srand(SEED);
+	std::map<int, int> std_map_tmp1;
+	std::map<int, int> std_map_tmp2;
+	for (int i = 0; i < 500; ++i)
+		std_map_tmp1.insert(std::make_pair(std::rand(), std::rand()));
+	for (int i = 0; i < 500; ++i)
+		std_map_tmp2.insert(std::make_pair(std::rand(), std::rand()));
+	T map1(std_map_tmp1.begin(), std_map_tmp1.end());
+	T map2(std_map_tmp2.begin(), std_map_tmp2.end());
+	T map3(std_map_tmp1.begin(), std_map_tmp1.end());;
+
+	std::map<int, int> std_map;
+	std_map.insert(std::make_pair(map1 == map2, 0));
+	std_map.insert(std::make_pair(map1 == map3, 0));
+
+	std_map.insert(std::make_pair(map1 != map2, 0));
+	std_map.insert(std::make_pair(map1 != map3, 0));
+
+	std_map.insert(std::make_pair(map1 < map2, 0));
+	std_map.insert(std::make_pair(map1 < map3, 0));
+
+	std_map.insert(std::make_pair(map1 <= map2, 0));
+	std_map.insert(std::make_pair(map1 <= map3, 0));
+
+	std_map.insert(std::make_pair(map1 > map2, 0));
+	std_map.insert(std::make_pair(map1 > map3, 0));
+
+	std_map.insert(std::make_pair(map1 >= map2, 0));
+	std_map.insert(std::make_pair(map1 >= map3, 0));
+
+	T map(std_map.begin(), std_map.end());
+	return map;
+}
+
 void map()
 {
 	print_title("Map");
@@ -470,4 +506,5 @@ void map()
 	run_case("upper_bound", &upper_bound< ft::map<int, int> >, &upper_bound< std::map<int, int> >);
 	run_case("equal_range", &equal_range< ft::map<int, int> >, &equal_range< std::map<int, int> >);
 	run_case("get_allocator", &get_allocator< ft::map<int, int> >, &get_allocator< std::map<int, int> >);
+	run_case("Relational operators", &relational_operators< ft::map<int, int> >, &relational_operators< std::map<int, int> >);
 }
