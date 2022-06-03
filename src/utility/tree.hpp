@@ -150,6 +150,64 @@ namespace ft
 		Node<T>* node;
 	};
 
+	template<typename T>
+	struct const_tree_iterator
+	{
+		typedef T			value_type;
+		typedef const T&	reference;
+		typedef const T*	pointer;
+
+		typedef bidirectional_iterator_tag	iterator_category;
+		typedef std::ptrdiff_t				difference_type;
+
+		typedef const_tree_iterator<T>			self;
+		typedef Node<T>*						link_type;
+
+		const_tree_iterator() : node() { }
+
+		explicit const_tree_iterator(Node<T>* _x) : node(_x) { }
+
+		const_tree_iterator(const tree_iterator<T>& it) : node(it.node) { }
+
+		reference operator*() const { return *static_cast<link_type>(node)->valptr(); }
+
+		pointer operator->() const { return static_cast<link_type> (node)->valptr(); }
+
+		self& operator++()
+		{
+			node = tree_increment<T>(node);
+			return *this;
+		}
+
+		self operator++(int)
+		{
+			self _tmp = *this;
+			node = tree_increment<T>(node);
+			return _tmp;
+		}
+
+		self& operator--()
+		{
+			node = tree_decrement<T>(node);
+			return *this;
+		}
+
+		self operator--(int)
+		{
+			self _tmp = *this;
+			node = tree_decrement<T>(node);
+			return _tmp;
+		}
+
+		friend bool
+		operator==(const self& _x, const self& _y) { return _x.node == _y.node; }
+
+		friend bool
+		operator!=(const self& _x, const self& _y) { return _x.node != _y.node; }
+
+		Node<T>* node;
+	};
+
 	template <class Key, class T, typename Compare = std::less<Key>, typename Alloc = std::allocator<T> >
 	class Tree
 	{
@@ -159,7 +217,7 @@ namespace ft
 		typedef typename Alloc::template rebind<Node<value_type> >::other	allocator_type;
 		typedef Compare														key_compare;
 		typedef ft::tree_iterator<value_type>								iterator;
-		typedef ft::tree_iterator<value_type>								const_iterator;
+		typedef ft::const_tree_iterator<value_type>							const_iterator;
 		typedef typename allocator_type::size_type							size_type;
 	private:
 		Node<value_type>*		_root;
