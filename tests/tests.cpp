@@ -15,11 +15,13 @@ int main(int argc, char *argv[])
 		std::cout << "error: bad argument" << std::endl;
 		return 1;
 	}
-	vector();
+	//vector();
 	std::cout << std::endl;
-	stack();
+	//stack();
 	std::cout << std::endl;
-	map();
+	//map();
+	std::cout << std::endl;
+	advanced();
 	std::cout << std::endl;
 	return 0;
 }

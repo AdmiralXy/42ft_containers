@@ -4,5 +4,6 @@
 void vector();
 void stack();
 void map();
+void advanced();
 
 #endif

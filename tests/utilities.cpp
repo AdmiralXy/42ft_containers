@@ -6,15 +6,17 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <cmath>
 
 void print_title(std::string test_name)
 {
-	int width = 38;
+	int width = 58;
+	int dash_counter = static_cast<int>(ceil(width * 1.73) - static_cast<double>(test_name.length()));
 	std::cout
 			<< "\033[1m\033[36m"
-			<< std::string(width * 1.38, '-')
+			<< std::string(dash_counter, '-')
 			<< test_name
-			<< std::string(width * 1.38, '-')
+			<< std::string(dash_counter, '-')
 			<< "\033[0m"
 			<< std::endl;
 	std::cout
@@ -45,19 +47,19 @@ void print_line(std::string str1, std::string str2, std::string str3, std::strin
 {
 	std::cout
 			<< std::left
-			<< std::setw(25)
+			<< std::setw(45)
 			<< std::setfill(' ')
 			<< str1
 			<< std::left
-			<< std::setw(36)
+			<< std::setw(56)
 			<< std::setfill(' ')
 			<< str2
 			<< std::left
-			<< std::setw(38)
+			<< std::setw(58)
 			<< std::setfill(' ')
 			<< str3
 			<< std::left
-			<< std::setw(38)
+			<< std::setw(58)
 			<< std::setfill(' ')
 			<< str4
 			<< std::left
