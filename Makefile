@@ -1,7 +1,7 @@
 CC = c++
 RM = rm -f
 # TODO remove -g flag
-CFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98 -Isrc -I. -Iiterator -Iutility -g
+CFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98 -I. -Iincludes -Iiterator -Iutility -g
 
 NAME_UNIT_TESTS = ctests
 NAME_BENCHMARK_FT = ft_cbenchmark
@@ -12,19 +12,19 @@ OBJS_UNIT_TESTS = $(SRCS_UNIT_TESTS:%.cpp=%.o)
 
 SRCS_BENCHMARK = benchmark/benchmark.cpp
 
-INCLUDES = src/iterator/iterator_traits.hpp \
-		src/iterator/normal_iterator.hpp \
-		src/iterator/reverse_iterator.hpp \
-		src/utility/enable_if.hpp \
-		src/utility/equal.hpp \
-		src/utility/is_integral.hpp \
-		src/utility/lexicographical_compare.hpp \
-		src/utility/pair.hpp \
-		src/utility/tree.hpp \
-		src/utility/utility.hpp \
-		src/map.hpp \
-		src/stack.hpp \
-		src/vector.hpp
+INCLUDES = includes/iterator/iterator_traits.hpp \
+		includes/iterator/normal_iterator.hpp \
+		includes/iterator/reverse_iterator.hpp \
+		includes/utility/enable_if.hpp \
+		includes/utility/equal.hpp \
+		includes/utility/is_integral.hpp \
+		includes/utility/lexicographical_compare.hpp \
+		includes/utility/pair.hpp \
+		includes/utility/tree.hpp \
+		includes/utility/utility.hpp \
+		includes/map.hpp \
+		includes/stack.hpp \
+		includes/vector.hpp
 
 %.o: %.cpp $(INCLUDES)
 	@$(CC) $(CFLAGS) -c $< -o $(<:.cpp=.o)
