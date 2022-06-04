@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	N = std::atoi(argv[1]);
-	if (N < 1) {
-		std::cout << "error: bad argument" << std::endl;
+	if (N < 3) {
+		std::cout << "error: bad or too low argument" << std::endl;
 		return 1;
 	}
 	vector();
