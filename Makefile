@@ -1,6 +1,5 @@
 CC = c++
 RM = rm -f
-# TODO remove -g flag
 CFLAGS = -Wall -Wextra -Werror -Wpedantic -std=c++98 -I. -Iincludes -Iiterator -Iutility -g
 
 NAME_UNIT_TESTS = ctests
